@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stockguru — learn to invest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FFFFFF;
+    --paper-raised:#F6F6F4;
+    --ink:#16241F;
+    --ink-soft:#4B564E;
+    --green:#1F7A5C;
+    --green-soft:#DCEBE3;
+    --gold:#B8862F;
+    --gold-soft:#F2E6CC;
+    --brick:#B5473B;
+    --brick-soft:#F5DEDA;
+    --blue:#3A6EA5;
+    --line:#C7CCC2;
+    --radius:14px;
+  }
+
+  *{box-sizing:border-box;}
+
+  html,body{
+    margin:0;
+    padding:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    min-height:100vh;
+  }
+
+  .app{
+    max-width:520px;
+    margin:0 auto;
+    min-height:100vh;
+    background:transparent;
+    display:flex;
+    flex-direction:column;
+    padding-bottom:74px;
+  }
+
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    margin:0;
+  }
+
+  .mono{font-family:'IBM Plex Mono', monospace;}
+
+  .topbar{
+    position:sticky;
+    top:0;
+    z-index:5;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 20px;
+    background:rgba(255,255,255,0.92);
+    backdrop-filter:blur(4px);
+    border-bottom:1px solid var(--line);
+    gap:8px;
+  }
+
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    cursor:pointer;
+    background:none;
+    border:none;
+    padding:0;
+  }
+
+  .brand-mark{width:22px;height:22px;flex-shrink:0;}
+
+  .brand-name{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:19px;
+    letter-spacing:0.2px;
+    color:var(--ink);
+  }
+
+  .stats{
+    display:flex;
+    gap:14px;
+    align-items:center;
+  }
+
+  .stat{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:13px;
+    color:var(--ink-soft);
+  }
+
+  .stat strong{
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:600;
+    font-size:14px;
+    color:var(--ink);
+  }
+
+  .stat.streak strong{color:var(--gold);}
+  .stat.score strong{color:var(--green);}
+  .stat.level strong{color:var(--gold);}
+  .stat.level.intermediate strong{color:var(--blue, #3A6EA5);}
+  .stat.level.advanced strong{color:var(--green);}
+
+  .screen{
+    flex:1;
+    padding:28px 24px 60px;
+  }
+
+  .home-header{
+    margin-bottom:8px;
+  }
+
+  .home-header p{
+    color:var(--ink-soft);
+    font-size:14px;
+    margin:6px 0 0;
+    max-width:38ch;
+  }
+
+  .goals-note{
+    margin:24px 0 -8px;
+    padding:14px 16px;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    background:var(--paper-raised);
+    font-size:13px;
+    color:var(--ink-soft);
+    line-height:1.5;
+  }
+
+  .goals-note p{margin:0 0 6px;}
+  .goals-note p:last-child{margin-bottom:0;}
+
+  .unit-block{
+    margin-top:36px;
+  }
+
+  .unit-label{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    margin-bottom:22px;
+    padding-left:2px;
+  }
+
+  .unit-number{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:2px 6px;
+  }
+
+  .unit-title{
+    font-size:15px;
+    font-weight:600;
+    color:var(--ink);
+  }
+
+  .unit-sub{
+    font-size:12px;
+    color:var(--ink-soft);
+  }
+
+  .path-item{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+    padding:4px 0 8px;
+  }
+
+  .node{
+    position:relative;
+    width:64px;
+    height:64px;
+    border-radius:50%;
+    background:var(--paper-raised);
+    border:1.5px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .node.done{
+    border-color:var(--green);
+    background:var(--green-soft);
+  }
+
+  .node.recommended{
+    border-color:var(--gold);
+    box-shadow:0 0 0 4px var(--gold-soft);
+  }
+
+  .node svg{color:#9BA39A;}
+  .node.done svg{color:var(--green);}
+  .node.recommended svg{color:var(--gold);}
+
+  .node-status{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+  }
+
+  .node-status.done{color:var(--green); font-weight:600;}
+
+  .recommended-tag{
+    font-size:11px;
+    color:var(--gold);
+    font-weight:600;
+    letter-spacing:0.3px;
+    text-transform:uppercase;
+  }
+
+  .tier-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:2px;
+    justify-content:center;
+  }
+
+  .tier-btn{
+    display:flex;
+    align-items:center;
+    gap:5px;
+    padding:7px 11px;
+    border-radius:20px;
+    border:1.5px solid var(--line);
+    background:var(--paper-raised);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:12px;
+    font-weight:600;
+    color:var(--ink);
+    cursor:pointer;
+  }
+
+  .tier-btn.done{border-color:var(--green); color:var(--green); background:var(--green-soft);}
+  .tier-btn.locked{color:#9BA39A; cursor:not-allowed;}
+  .tier-btn .lock-ic{width:12px;height:12px;flex-shrink:0;}
+
+  .quiz-top{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:16px 20px;
+  }
+
+  .exit-btn{
+    background:none;
+    border:none;
+    color:var(--ink-soft);
+    font-size:20px;
+    cursor:pointer;
+    line-height:1;
+    padding:4px;
+  }
+
+  .progress-track{
+    flex:1;
+    height:8px;
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:4px;
+    overflow:hidden;
+    display:flex;
+  }
+
+  .progress-seg{
+    flex:1;
+    border-right:1px solid var(--paper);
+  }
+
+  .progress-seg:last-child{border-right:none;}
+
+  .progress-seg.fill{background:var(--green);}
+  .progress-seg.wrong{background:var(--brick);}
+
+  .quiz-body{
+    padding:12px 24px 40px;
+  }
+
+  .quiz-eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    margin-bottom:10px;
+  }
+
+  .question{
+    font-size:23px;
+    line-height:1.35;
+    margin-bottom:28px;
+  }
+
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+
+  .option{
+    text-align:left;
+    padding:16px 18px;
+    border:1.5px solid var(--line);
+    border-radius:var(--radius);
+    background:var(--paper-raised);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:15.5px;
+    color:var(--ink);
+    cursor:pointer;
+    transition:border-color .1s ease, background .1s ease;
+  }
+
+  .option:hover:not(.correct):not(.incorrect):not(.disabled){
+    border-color:var(--ink);
+  }
+
+  .option.correct{
+    border-color:var(--green);
+    background:var(--green-soft);
+    color:#123D2C;
+  }
+
+  .option.incorrect{
+    border-color:var(--brick);
+    background:var(--brick-soft);
+    color:#6E241C;
+  }
+
+  .option.disabled{cursor:default;}
+
+  .feedback{
+    margin-top:22px;
+    padding:16px 18px;
+    border-radius:var(--radius);
+    border:1.5px solid var(--line);
+    background:var(--paper-raised);
+    font-size:14px;
+    line-height:1.55;
+    display:none;
+  }
+
+  .feedback.show{display:block;}
+
+  .feedback.correct{border-color:var(--green); background:var(--green-soft);}
+  .feedback.incorrect{border-color:var(--brick); background:var(--brick-soft);}
+
+  .feedback-head{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:0.3px;
+    text-transform:uppercase;
+    margin-bottom:6px;
+  }
+
+  .feedback.correct .feedback-head{color:var(--green);}
+  .feedback.incorrect .feedback-head{color:var(--brick);}
+
+  .continue-bar{
+    position:sticky;
+    bottom:0;
+    padding:16px 24px 24px;
+    background:linear-gradient(to top, var(--paper) 60%, transparent);
+  }
+
+  button.primary{
+    width:100%;
+    padding:15px;
+    border-radius:var(--radius);
+    border:none;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-weight:600;
+    font-size:15px;
+    cursor:pointer;
+  }
+
+  button.primary:disabled{
+    background:#B9C0B3;
+    cursor:not-allowed;
+  }
+
+  button.primary.go{background:var(--green);}
+
+  .secondary-btn{
+    width:100%;
+    padding:14px;
+    border-radius:var(--radius);
+    border:1.5px solid var(--line);
+    background:var(--paper-raised);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+  }
+
+  .secondary-btn:hover{border-color:var(--ink);}
+
+  .paywall-note{
+    margin:20px 0 -8px;
+    padding:14px 16px;
+    border:1px solid var(--gold);
+    border-radius:var(--radius);
+    background:var(--gold-soft);
+    font-size:13px;
+    color:#5C4419;
+    line-height:1.5;
+  }
+
+  .paywall-note strong{color:var(--gold);}
+
+  .summary{
+    padding:50px 28px 40px;
+    text-align:center;
+  }
+
+  .summary-kicker{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+  }
+
+  .summary h2{
+    font-size:28px;
+    margin-bottom:28px;
+  }
+
+  .congrats-banner{
+    margin:0 0 24px;
+    padding:14px 16px;
+    border-radius:var(--radius);
+    border:1.5px solid var(--green);
+    background:var(--green-soft);
+    color:#123D2C;
+    font-size:14px;
+    font-weight:600;
+    display:none;
+  }
+
+  .congrats-banner.show{display:block;}
+
+  .close-strip{
+    display:flex;
+    gap:4px;
+    justify-content:center;
+    align-items:flex-end;
+    height:64px;
+    margin-bottom:32px;
+  }
+
+  .close-bar{
+    width:16px;
+    border-radius:2px 2px 0 0;
+  }
+
+  .close-bar.win{background:var(--green);}
+  .close-bar.loss{background:var(--brick);}
+
+  .summary-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:12px;
+    margin-bottom:36px;
+  }
+
+  .metric{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:16px 8px;
+  }
+
+  .metric-num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:22px;
+    font-weight:600;
+  }
+
+  .metric-num.green{color:var(--green);}
+  .metric-num.gold{color:var(--gold);}
+
+  .metric-label{
+    font-size:11px;
+    color:var(--ink-soft);
+    margin-top:4px;
+  }
+
+  .lesson-feedback{
+    text-align:left;
+    margin:8px 0 28px;
+    padding:18px;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    background:var(--paper-raised);
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .lesson-feedback-label{
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink);
+  }
+
+  .learn-more-card{
+    text-align:left;
+    margin:8px 0 20px;
+    padding:18px;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    background:var(--paper-raised);
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+
+  .learn-more-actions{
+    display:flex;
+    gap:10px;
+  }
+
+  .learn-more-actions .secondary-btn{
+    width:auto;
+    flex:1;
+    padding:11px;
+    font-size:13.5px;
+  }
+
+  .learn-more-text{
+    font-size:14px;
+    line-height:1.65;
+    color:var(--ink-soft);
+  }
+
+  .feedback-thanks{
+    font-size:13px;
+    color:var(--green);
+  }
+
+  .goals-list{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    margin-top:28px;
+  }
+
+  .goal-card{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    text-align:left;
+    padding:16px 18px;
+    border:1.5px solid var(--line);
+    border-radius:var(--radius);
+    background:var(--paper-raised);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:15px;
+    color:var(--ink);
+    cursor:pointer;
+  }
+
+  .goal-card:hover{border-color:var(--ink);}
+
+  .goal-card.selected{
+    border-color:var(--green);
+    background:var(--green-soft);
+    color:#123D2C;
+  }
+
+  .goal-check{
+    flex-shrink:0;
+    width:20px;
+    height:20px;
+    border-radius:50%;
+    border:1.5px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--green);
+  }
+
+  .goal-card.selected .goal-check{
+    border-color:var(--green);
+    background:var(--green);
+    color:#fff;
+  }
+
+  .goals-bar{
+    padding:28px 0 8px;
+  }
+
+  .feedback-form{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    margin-top:24px;
+  }
+
+  .feedback-form textarea,
+  .lesson-feedback textarea{
+    width:100%;
+    border:1.5px solid var(--line);
+    border-radius:var(--radius);
+    padding:14px 16px;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:14.5px;
+    color:var(--ink);
+    background:var(--paper-raised);
+    resize:vertical;
+  }
+
+  .feedback-disclaimer{
+    font-size:12px;
+    color:var(--ink-soft);
+    margin:0;
+  }
+
+  .feedback-section-label{
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink);
+  }
+
+  .topics-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .topic-card{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:13px 16px;
+    border:1.5px solid var(--line);
+    border-radius:var(--radius);
+    background:var(--paper-raised);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:14.5px;
+    color:var(--ink);
+    cursor:pointer;
+  }
+
+  .topic-card:hover{border-color:var(--ink);}
+
+  .topic-card.selected{
+    border-color:var(--green);
+    background:var(--green-soft);
+    color:#123D2C;
+  }
+
+  .topic-tick{
+    flex-shrink:0;
+    width:20px;
+    height:20px;
+    border-radius:4px;
+    border:1.5px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--green);
+  }
+
+  .topic-card.selected .topic-tick{
+    border-color:var(--green);
+    background:var(--green);
+    color:#fff;
+  }
+
+  .welcome-wrap{
+    padding:52px 30px 30px;
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+
+  .welcome-mark{
+    width:40px;
+    height:40px;
+    margin-bottom:20px;
+  }
+
+  .welcome-kicker{
+    font-size:13px;
+    color:var(--ink-soft);
+    letter-spacing:0.5px;
+    margin-bottom:6px;
+  }
+
+  .welcome-title{
+    font-size:36px;
+    margin-bottom:20px;
+  }
+
+  .welcome-mission{
+    font-size:16px;
+    line-height:1.6;
+    color:var(--ink-soft);
+    max-width:34ch;
+    margin:0 0 16px;
+  }
+
+  .welcome-tagline{
+    font-size:14px;
+    line-height:1.6;
+    color:var(--ink);
+    font-weight:600;
+    max-width:32ch;
+    margin:0 0 24px;
+  }
+
+  .welcome-wrap .primary{
+    width:auto;
+    padding:15px 36px;
+    margin-bottom:18px;
+  }
+
+  .welcome-disclaimer{
+    font-size:12px;
+    color:var(--ink-soft);
+    max-width:32ch;
+    line-height:1.5;
+  }
+
+  .experience-options{
+    display:flex;
+    gap:12px;
+    width:100%;
+    margin:24px 0 8px;
+  }
+
+  .experience-btn{
+    flex:1;
+    padding:16px 10px;
+    border-radius:var(--radius);
+    border:1.5px solid var(--line);
+    background:var(--paper-raised);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-weight:600;
+    font-size:14px;
+    color:var(--ink);
+    cursor:pointer;
+  }
+
+  .experience-btn.selected{
+    border-color:var(--green);
+    background:var(--green-soft);
+    color:#123D2C;
+  }
+
+  .didyouknow{
+    width:100%;
+    text-align:left;
+    margin:28px 0 8px;
+    padding:18px;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    background:var(--paper-raised);
+  }
+
+  .didyouknow-title{
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:10px;
+  }
+
+  .didyouknow-stat{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    font-size:13px;
+    color:var(--ink-soft);
+    line-height:1.5;
+    margin-bottom:8px;
+  }
+
+  .didyouknow-stat:last-child{margin-bottom:0;}
+
+  .didyouknow-num{
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:600;
+    color:var(--green);
+    flex-shrink:0;
+  }
+
+  .wip-wrap{
+    padding:50px 28px 30px;
+    text-align:center;
+  }
+
+  .wip-badge{
+    display:inline-block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    font-weight:600;
+    color:var(--gold);
+    border:1px solid var(--gold);
+    background:var(--gold-soft);
+    padding:4px 10px;
+    border-radius:20px;
+    margin-bottom:18px;
+  }
+
+  .wip-wrap p{
+    font-size:15px;
+    line-height:1.6;
+    color:var(--ink-soft);
+    max-width:36ch;
+    margin:0 auto 12px;
+  }
+
+  .spx-chart-wrap{
+    text-align:left;
+    margin:0 0 28px;
+    padding:16px 16px 12px;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    background:var(--paper-raised);
+  }
+
+  .spx-chart-title{
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink);
+    margin-bottom:10px;
+  }
+
+  .spx-chart-caption{
+    font-size:11px;
+    color:var(--ink-soft);
+    margin-top:8px;
+  }
+
+  .bottom-nav{
+    position:fixed;
+    left:50%;
+    bottom:0;
+    transform:translateX(-50%);
+    width:100%;
+    max-width:520px;
+    display:flex;
+    background:#FFFFFF;
+    border-top:1px solid var(--line);
+    z-index:10;
+  }
+
+  .nav-item{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    padding:10px 4px 12px;
+    background:none;
+    border:none;
+    cursor:pointer;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:10.5px;
+    color:var(--ink-soft);
+  }
+
+  .nav-icon{
+    width:20px;
+    height:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--ink-soft);
+  }
+
+  .nav-item.active{color:var(--green);}
+  .nav-item.active .nav-icon{color:var(--green);}
+
+  .hidden{display:none !important;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <div class="topbar">
+    <button class="brand" id="brand-btn">
+      <svg class="brand-mark" viewBox="0 0 24 24" fill="none">
+        <rect x="3" y="13" width="4" height="8" fill="#1F7A5C"/>
+        <rect x="10" y="8" width="4" height="13" fill="#1F7A5C"/>
+        <rect x="17" y="3" width="4" height="18" fill="#B8862F"/>
+      </svg>
+      <span class="brand-name">Stockguru</span>
+    </button>
+    <div class="stats">
+      <div class="stat level" id="level-stat">
+        <span>level</span><strong id="level-val">Beginner</strong>
+      </div>
+      <div class="stat streak">
+        <span>streak</span><strong id="streak-val">0d</strong>
+      </div>
+      <div class="stat score">
+        <span>score</span><strong id="score-val">0</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- WELCOME SCREEN -->
+  <div id="welcome-screen" class="screen hidden">
+    <div class="welcome-wrap">
+      <svg class="welcome-mark" viewBox="0 0 24 24" fill="none">
+        <rect x="3" y="13" width="4" height="8" fill="#1F7A5C"/>
+        <rect x="10" y="8" width="4" height="13" fill="#1F7A5C"/>
+        <rect x="17" y="3" width="4" height="18" fill="#B8862F"/>
+      </svg>
+      <div class="welcome-kicker mono">welcome to</div>
+      <h1 class="welcome-title">Stockguru</h1>
+      <p class="welcome-mission">Our mission is to kickstart new investors and take those who already know the basics further — so everyone can invest with real confidence.</p>
+      <p class="welcome-tagline">The best way to learn: bite-sized quizzes now, and hands-on play with example data coming soon.</p>
+      <button class="primary go" id="welcome-continue-btn">Get started</button>
+      <button class="secondary-btn hidden" id="welcome-intro-btn" style="width:auto; padding:13px 30px; margin-bottom:18px;">Introduction to app</button>
+      <p class="welcome-disclaimer">Stockguru does not provide financial advice. It's built for education only.</p>
+    </div>
+  </div>
+
+  <!-- EXPERIENCE SCREEN -->
+  <div id="experience-screen" class="screen hidden">
+    <div class="welcome-wrap" style="padding-top:44px;">
+      <h1 class="welcome-title" style="font-size:26px;">What's your experience?</h1>
+      <p class="welcome-mission" style="margin-bottom:4px;">Have you ever bought a stock or cryptocurrency on a platform before?</p>
+      <div class="experience-options">
+        <button class="experience-btn" data-value="yes">Yes, I have</button>
+        <button class="experience-btn" data-value="no">Not yet</button>
+      </div>
+      <div class="didyouknow">
+        <div class="didyouknow-title">Did you know?</div>
+        <div class="didyouknow-stat"><span class="didyouknow-num">86%</span><span>of new investors surveyed said it was simply unclear how to start on a platform.</span></div>
+        <div class="didyouknow-stat"><span class="didyouknow-num">64%</span><span>said it was unclear how to come to an investment strategy — and when to buy or sell.</span></div>
+        <div class="didyouknow-stat"><span class="didyouknow-num">75%</span><span>said a mixed investment strategy, spread across types, was unfamiliar to them.</span></div>
+      </div>
+      <div class="didyouknow">
+        <div class="didyouknow-title">How Stockguru is set up</div>
+        <p style="font-size:13px; color:var(--ink-soft); line-height:1.6; margin:0 0 8px;">The free version includes every part of the app, at a limited scope: the quiz only offers Beginner questions (Intermediate and Advanced unlock with a one-time payment), and Play with data shows a couple of example scenarios (many more real-data examples unlock the same way).</p>
+        <p style="font-size:13px; color:var(--green); font-weight:600; line-height:1.6; margin:0;">As an early bird user, you currently have free access to everything — Beginner, Intermediate, Advanced, and the full Play with data library.</p>
+      </div>
+      <button class="primary go" id="experience-continue-btn" style="margin-top:24px;" disabled>Continue</button>
+    </div>
+  </div>
+
+  <!-- GOALS SCREEN -->
+  <div id="goals-screen" class="screen hidden">
+    <div class="home-header">
+      <h1>What brings you here?</h1>
+      <p>Pick anything that fits — it just helps us point you to the right sections first.</p>
+    </div>
+    <div class="goals-list" id="goals-list"></div>
+    <div class="goals-bar">
+      <button class="primary go" id="goals-continue-btn" disabled>Continue</button>
+    </div>
+  </div>
+
+  <!-- HOME SCREEN -->
+  <div id="home-screen" class="screen hidden">
+    <div class="home-header">
+      <h1>Learn to invest</h1>
+      <p id="home-sub">Five-minute lessons on the fundamentals — work through each section at your own pace.</p>
+    </div>
+    <div class="paywall-note">Intermediate and Advanced levels normally unlock with a one-time payment. <strong>As an early bird, you have free access to everything for now.</strong></div>
+    <div id="goals-note" class="goals-note hidden"></div>
+    <div id="units-container"></div>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen hidden" style="padding:0;">
+    <div class="quiz-top">
+      <button class="exit-btn" id="exit-btn" aria-label="Exit lesson">&times;</button>
+      <div class="progress-track" id="progress-track"></div>
+    </div>
+    <div class="quiz-body">
+      <div class="quiz-eyebrow" id="quiz-eyebrow"></div>
+      <div class="question" id="question-text"></div>
+      <div class="options" id="options-container"></div>
+      <div class="feedback" id="feedback-box">
+        <div class="feedback-head" id="feedback-head"></div>
+        <div id="feedback-text"></div>
+      </div>
+    </div>
+    <div class="continue-bar">
+      <button class="primary" id="continue-btn" disabled>Check</button>
+    </div>
+  </div>
+
+  <!-- SUMMARY SCREEN -->
+  <div id="summary-screen" class="screen hidden">
+    <div class="summary">
+      <div class="summary-kicker mono" id="summary-unit"></div>
+      <h2>Daily close</h2>
+      <div class="congrats-banner" id="congrats-banner">Congratulations — you're ready to get going!</div>
+      <div class="close-strip" id="close-strip"></div>
+      <div class="summary-grid">
+        <div class="metric">
+          <div class="metric-num green" id="sum-correct">0/0</div>
+          <div class="metric-label">correct</div>
+        </div>
+        <div class="metric">
+          <div class="metric-num gold" id="sum-xp">+0</div>
+          <div class="metric-label">score earned</div>
+        </div>
+        <div class="metric">
+          <div class="metric-num" id="sum-streak">0d</div>
+          <div class="metric-label">streak</div>
+        </div>
+      </div>
+      <div class="learn-more-card" id="learn-more-card">
+        <div class="lesson-feedback-label">Want the fuller story behind this section?</div>
+        <div class="learn-more-actions">
+          <button class="secondary-btn" id="learn-more-btn">Learn more</button>
+          <button class="secondary-btn" id="speak-btn">Listen</button>
+        </div>
+        <div class="learn-more-text hidden" id="learn-more-text"></div>
+      </div>
+      <div class="lesson-feedback" id="lesson-feedback">
+        <div class="lesson-feedback-label">What would you like to learn more about here?</div>
+        <textarea id="lesson-feedback-input" rows="2" placeholder="e.g. more on how dividends get taxed"></textarea>
+        <button class="secondary-btn" id="lesson-feedback-submit">Send feedback</button>
+        <div class="feedback-thanks hidden" id="lesson-feedback-thanks">Thanks — saved for the next update.</div>
+      </div>
+      <button class="primary go" id="back-home-btn">Back to path</button>
+    </div>
+  </div>
+
+  <!-- PLAY WITH DATA SCREEN -->
+  <div id="playdata-screen" class="screen hidden">
+    <div class="wip-wrap">
+      <div class="wip-badge">under construction</div>
+      <h2 style="font-size:24px; margin-bottom:16px;">Play with data</h2>
+      <div class="spx-chart-wrap">
+        <div class="spx-chart-title">S&P 500 — last 5 years, monthly</div>
+        <div id="spx-chart"></div>
+        <div class="spx-chart-caption">Illustrative monthly averages, not real-time data. Source: S&P Dow Jones Indices, via Yahoo Finance.</div>
+      </div>
+      <p>This is where you'll be able to play with example data to see how low and high risk investments could play out over time — and the possible return that comes with each.</p>
+      <p>It's still under construction. You're very welcome to check back later!</p>
+      <div class="paywall-note" style="text-align:left; margin-top:28px;">Want to see more examples, or run your own what-if scenarios? That normally unlocks with a one-time payment of €9.99. <strong>As an early bird, you're free to test it all for now.</strong></div>
+    </div>
+  </div>
+
+  <!-- FEEDBACK SCREEN -->
+  <div id="feedback-screen" class="screen hidden">
+    <div class="home-header">
+      <h1>Feedback</h1>
+      <p>Tell us what to add, fix, or explain better — every note helps shape the next section.</p>
+    </div>
+    <div class="feedback-form">
+      <div class="feedback-section-label">Which main topics would you like to learn more about?</div>
+      <div class="topics-list" id="topics-list"></div>
+
+      <div class="feedback-section-label" style="margin-top:10px;">Anything else?</div>
+      <textarea id="general-feedback-input" rows="4" placeholder="What should Stockguru cover next, or what's not working?"></textarea>
+
+      <button class="primary go" id="general-feedback-submit">Send feedback</button>
+      <div class="feedback-thanks hidden" id="general-feedback-thanks">Thanks — your feedback is saved.</div>
+      <p class="feedback-disclaimer">Feedback stays on this device for now — there's no server behind this proof of concept yet.</p>
+    </div>
+  </div>
+
+</div>
+
+<nav class="bottom-nav" id="bottom-nav">
+  <button class="nav-item" id="nav-goals" data-target="goals">
+    <span class="nav-icon" id="nav-goals-icon"></span>
+    <span>Set goals</span>
+  </button>
+  <button class="nav-item" id="nav-learn" data-target="home">
+    <span class="nav-icon" id="nav-learn-icon"></span>
+    <span>Learn by quiz</span>
+  </button>
+  <button class="nav-item" id="nav-playdata" data-target="playdata">
+    <span class="nav-icon" id="nav-playdata-icon"></span>
+    <span>Play with data</span>
+  </button>
+  <button class="nav-item" id="nav-feedback" data-target="feedback">
+    <span class="nav-icon" id="nav-feedback-icon"></span>
+    <span>Feedback</span>
+  </button>
+</nav>
+
+<script src="./app.js"></script>
+</body>
+</html>

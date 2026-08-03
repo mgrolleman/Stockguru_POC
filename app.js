@@ -1,0 +1,1161 @@
+(function(){
+
+  var SECTIONS = [
+    {
+      title:"Money basics",
+      sub:"What you actually own",
+      learnMore:"Imagine buying a single share of a company you believe in. That purchase makes you a tiny owner — not a lender, not a customer, an actual owner. If the company thrives, profits can come back to you as dividends, and the value of your slice can grow. If it struggles, your slice can shrink in value, and if it goes under, owners are the last to get anything back, well behind lenders and bondholders. That's the trade at the heart of investing: as an owner you take on more risk than a lender does, but you also get to share directly in the upside with no ceiling on how well things can go. Every time you check a stock price, you're seeing what the market currently thinks your slice of that business is worth — a number that shifts constantly as new information arrives, but one that doesn't erase your ownership. Understanding that distinction — owner versus lender — is the single most useful mental model for everything else you'll learn about investing.",
+      questions:[
+        {
+          q:"When you buy a share of stock, what are you actually buying?",
+          options:["A loan to the company","A small ownership stake in the company","A guaranteed dividend payment","A seat on the board"],
+          correct:1,
+          explain:"A share represents partial ownership of a company. As an owner, you're entitled to a slice of its profits and assets — though never a guaranteed one."
+        },
+        {
+          q:"What's the main difference between a stock and a bond?",
+          options:["Stocks are ownership, bonds are debt","Stocks are debt, bonds are ownership","They're the same thing","Bonds can only be bought by banks"],
+          correct:0,
+          explain:"Buying a stock makes you a part-owner. Buying a bond makes you a lender — the borrower owes you your money back, plus interest."
+        },
+        {
+          q:"What is a dividend?",
+          options:["A fee charged to trade stocks","A portion of company profit paid to shareholders","The price you pay for a share","A tax on stock market gains"],
+          correct:1,
+          explain:"Not every company pays one — many reinvest profits into growth instead. When they do, it's cash paid straight to shareholders, usually every quarter."
+        },
+        {
+          q:"What is the stock market, in plain terms?",
+          options:["A single building where stocks are printed","A government agency that sets stock prices","A marketplace where investors buy and sell shares","A savings account for company profits"],
+          correct:2,
+          explain:"It's a network of exchanges — like the NYSE or Nasdaq — where buyers and sellers agree on a price for shares, all day, every trading day."
+        },
+        {
+          q:"If a company's stock price drops, what happens to your shares?",
+          options:["They're automatically converted to cash","You still own the same number of shares, just worth less","The company takes them back","You owe the company money"],
+          correct:1,
+          explain:"Ownership doesn't change with price. You still hold the same shares — their market value has just fallen, on paper, until you sell."
+        }
+      ],
+      intermediate:[
+        {
+          q:"If a company goes bankrupt, where do common shareholders rank in getting paid back?",
+          options:["First, before all creditors","After bondholders and other creditors are paid","At the same time as employees' wages","Shareholders are guaranteed a fixed payout"],
+          correct:1,
+          explain:"Common shareholders sit last in line — bondholders and other creditors get paid first, part of why stocks carry more risk than bonds."
+        },
+        {
+          q:"What does it mean if a company issues \u201Cpreferred stock\u201D?",
+          options:["A class of shares with typically fixed dividends and priority over common stock, but usually no voting rights","A stock only insiders can buy","A guaranteed loan","A stock that can't lose value"],
+          correct:0,
+          explain:"Preferred shares sit between bonds and common stock — steadier income and priority in a payout, but usually you give up a vote."
+        },
+        {
+          q:"A stock buyback (share repurchase) typically does what to existing shareholders?",
+          options:["Dilutes their ownership","Reduces the number of shares outstanding, increasing each remaining share's proportional ownership","Forces them to sell","Has no effect on ownership"],
+          correct:1,
+          explain:"By retiring shares, a company shrinks the share count — so each remaining share represents a slightly bigger slice of the company."
+        }
+      ]
+    },
+    {
+      title:"How markets move",
+      sub:"Price, sentiment, scale",
+      learnMore:"Prices don't move because of some fixed formula — they move because millions of buyers and sellers are constantly re-negotiating what a company is worth, in real time, based on new information, expectations, and mood. A run of optimism and rising prices is called a bull market; a sustained slide is a bear market. Somewhere between the two sits ordinary daily noise: volatility, the natural up-and-down wobble of any actively traded asset. None of this is meaningless randomness — it reflects genuine disagreement about the future. A stock's price today already contains everyone's best guess about tomorrow's earnings, so news only moves the price when it changes that guess. That's why even \u201Cgood\u201D news can send a price down, if it wasn't quite as good as everyone secretly expected. Zoom out far enough, across an index like the S&P 500 tracking hundreds of companies at once, and the day-to-day noise smooths into a longer story — one that has, historically, tended to trend upward over long stretches of time, even though no single day is ever guaranteed.",
+      questions:[
+        {
+          q:"What's a \u201Cbull market\u201D?",
+          options:["A period of falling prices","A period of rising prices and optimism","A market only for commodities","A single day of high trading volume"],
+          correct:1,
+          explain:"Bull markets are sustained upswings, usually tied to growth and confidence. A bear market is its counterpart — a sustained downturn."
+        },
+        {
+          q:"What mainly determines a stock's price at any moment?",
+          options:["The company's founding date","What buyers are willing to pay and sellers willing to accept","A fixed number set by the exchange","The average price over the last decade"],
+          correct:1,
+          explain:"Prices move on supply and demand, moment to moment — shaped by earnings, news, and shifting expectations about the future."
+        },
+        {
+          q:"What does \u201Cvolatility\u201D mean in investing?",
+          options:["How often a company changes its name","How much a price swings up and down over time","The total value of a company","How many shares are available to buy"],
+          correct:1,
+          explain:"A volatile stock swings sharply in price; a stable one moves gradually. Higher volatility usually means higher risk — and higher potential reward."
+        },
+        {
+          q:"What is a stock market index, like the S&P 500?",
+          options:["A single company's stock","A basket tracking the performance of many stocks together","A type of bond","A government-set price ceiling"],
+          correct:1,
+          explain:"An index bundles many stocks — the S&P 500 tracks roughly 500 large U.S. companies — to give a snapshot of \u201Cthe market,\u201D not just one stock."
+        },
+        {
+          q:"A company's \u201Cmarket cap\u201D is calculated as:",
+          options:["Revenue minus expenses","Share price \u00D7 total number of shares","Total employees \u00D7 average salary","Annual profit \u00F7 dividend yield"],
+          correct:1,
+          explain:"Market capitalization is the value the market assigns a company — a $50 share price with 2 billion shares outstanding is a $100 billion market cap."
+        }
+      ],
+      intermediate:[
+        {
+          q:"What's a \u201Ccorrection\u201D in market terminology?",
+          options:["A 10%+ drop from a recent high","Any single down day","A change in a company's earnings report","An adjustment to a stock's ticker symbol"],
+          correct:0,
+          explain:"A correction is a decline of roughly 10% or more from a recent peak — smaller and more common than a full bear market."
+        },
+        {
+          q:"What does \u201Cliquidity\u201D mean for a stock?",
+          options:["How much debt the company carries","How easily you can buy or sell it without moving the price much","The company's cash reserves","The dividend payout ratio"],
+          correct:1,
+          explain:"A liquid stock trades often with many buyers and sellers, so you can enter or exit without big price swings from your own trade."
+        },
+        {
+          q:"Why can a stock keep falling even after strong earnings?",
+          options:["Earnings never affect price","The results still missed what the market had already priced in as expectations","It's illegal to fall after good earnings","The exchange fixes the price for a day"],
+          correct:1,
+          explain:"Prices react to results versus expectations, not results in isolation — even \u201Cgood\u201D earnings can miss a high bar and send a stock down."
+        }
+      ]
+    },
+    {
+      title:"Building a portfolio",
+      sub:"Risk, mix, discipline",
+      learnMore:"No single stock pick, however good it feels, should carry your entire financial future — that's the simple insight behind diversification. Spread your money across many holdings, and one bad outcome stops being catastrophic. Pair that with an honest read on risk and return: taking on more risk is how you earn the possibility of more return, never a guarantee of it. From there, the real decisions aren't about picking the \u201Cbest\u201D stock — they're about allocation: how much goes into stocks versus bonds versus cash, since that mix tends to matter more for your results than which individual company you chose. Two simple habits do a lot of the heavy lifting here. Dollar-cost averaging — investing a fixed amount on a regular schedule — means you naturally buy more when prices are cheap and less when they're expensive, without needing to predict anything. And rebalancing — periodically nudging your mix back to your original target — quietly forces you to trim what's grown too large and top up what's lagged, a disciplined way of buying low and selling high without ever trying to time the market.",
+      questions:[
+        {
+          q:"Why do investors diversify across many stocks instead of buying just one?",
+          options:["It's required by law","To spread out risk, so one bad performer doesn't sink the whole portfolio","It guarantees higher returns","Brokers charge less for multiple stocks"],
+          correct:1,
+          explain:"If one holding drops sharply, a diversified portfolio absorbs the hit better than a concentrated one — one of the few genuine free lunches in investing."
+        },
+        {
+          q:"What's the general relationship between risk and expected return?",
+          options:["Higher risk usually comes with higher potential return","Higher risk always means lower return","Risk and return are unrelated","Lower risk always beats higher risk over time"],
+          correct:0,
+          explain:"It's a trade-off, not a guarantee — riskier assets need to offer more potential upside to compensate investors for the extra uncertainty."
+        },
+        {
+          q:"What is an index fund?",
+          options:["A fund that tries to beat the market by picking winning stocks","A fund that buys and holds all — or most — stocks in an index","A savings bond issued by the government","A fund only available to institutional investors"],
+          correct:1,
+          explain:"Instead of guessing which stocks will win, an index fund owns the whole basket — low cost, broad diversification, and a common starting point."
+        },
+        {
+          q:"What is dollar-cost averaging?",
+          options:["Buying a fixed dollar amount of an investment at regular intervals, regardless of price","Only buying when the price hits its lowest point","Converting your portfolio to cash once a year","Averaging the price of every stock in the S&P 500"],
+          correct:0,
+          explain:"By investing the same amount regularly, you buy more shares when prices are low and fewer when they're high — smoothing out the effect of timing."
+        },
+        {
+          q:"What does \u201Casset allocation\u201D mean?",
+          options:["The specific stocks you own","How you split your money across categories like stocks, bonds, and cash","The fees your broker charges","The order in which you sell your holdings"],
+          correct:1,
+          explain:"Allocation is the big-picture mix — stocks vs. bonds vs. cash — and it's usually a bigger driver of long-term results than which stocks you pick."
+        }
+      ],
+      intermediate:[
+        {
+          q:"What's \u201Crebalancing\u201D a portfolio?",
+          options:["Selling everything and starting over","Periodically adjusting holdings back to your target allocation","Only buying more of your winners","A tax filing requirement"],
+          correct:1,
+          explain:"As some holdings grow faster than others, your mix drifts. Rebalancing trims the winners and tops up laggards to restore your intended risk level."
+        },
+        {
+          q:"What's the main risk of over-diversifying?",
+          options:["It's illegal past a certain number of holdings","Returns can start to resemble the average market, diluting your best picks' impact","It automatically increases fees to zero","There's no such thing as over-diversifying"],
+          correct:1,
+          explain:"Spread too thin, a portfolio can start to just track the broad market — not necessarily bad, but your winners have less room to move the needle."
+        },
+        {
+          q:"What does \u201Ccorrelation\u201D between two assets describe?",
+          options:["Which one has a higher price","How closely their price movements track each other","Which one pays a bigger dividend","Their combined market cap"],
+          correct:1,
+          explain:"Low or negative correlation is what makes diversification actually reduce risk — assets that don't move in lockstep smooth out the ride."
+        }
+      ]
+    },
+    {
+      title:"Reading the numbers",
+      sub:"The vocabulary of a quote",
+      learnMore:"Every stock quote hides a small vocabulary that turns a raw price into something you can actually reason about. A P/E ratio tells you how many dollars investors are paying for each dollar of a company's current profit — a rough shorthand for whether a stock looks expensive or cheap relative to its earnings. EPS breaks total profit down to a per-share basis, so you can compare a giant company to a tiny one on equal footing. Dividend yield reframes a company's payout as a percentage of its share price, so a $2 dividend means something different on a $20 stock than on a $200 one. None of these numbers hands you a verdict on their own — a low P/E might be a bargain, or it might be the market quietly pricing in real trouble ahead. They're tools for asking better questions, not answers in themselves. And when you're ready to act on what you've found, the type of order matters too: a market order trades speed for certainty of price, while a limit order lets you name your price and wait.",
+      questions:[
+        {
+          q:"What does a stock's P/E (price-to-earnings) ratio tell you?",
+          options:["How many shares are traded per day","How much investors are paying for each dollar of the company's profit","The company's total debt","The dividend paid per share"],
+          correct:1,
+          explain:"A P/E of 20 means investors are paying $20 for every $1 of annual earnings — a rough gauge of whether a stock looks expensive relative to its profits."
+        },
+        {
+          q:"What is EPS (earnings per share)?",
+          options:["A company's total profit divided by its number of outstanding shares","The price you pay for one share","The exchange fee per trade","A company's total revenue"],
+          correct:0,
+          explain:"EPS translates total profit into a per-share figure, making it easier to compare profitability across companies of very different sizes."
+        },
+        {
+          q:"What's the difference between a market order and a limit order?",
+          options:["Market orders execute immediately at the current price; limit orders only execute at a price you set","They're two names for the same thing","Limit orders are only for selling","Market orders can only be placed once a day"],
+          correct:0,
+          explain:"A market order prioritizes speed — you get the current price. A limit order prioritizes price — it only fills at the level you specify."
+        },
+        {
+          q:"Why does compound interest matter so much for long-term investors?",
+          options:["It doesn't — it's only relevant to savings accounts","Returns earn returns on top of returns, so growth accelerates over time","It guarantees a fixed rate every year","It only applies to bonds"],
+          correct:1,
+          explain:"Reinvested gains generate their own gains. Over decades, that compounding effect often drives more wealth than the amount originally invested."
+        },
+        {
+          q:"What does dividend yield measure?",
+          options:["A stock's annual dividend payment as a percentage of its share price","The number of dividends paid per year","The total dollar amount a company pays in dividends","The tax rate on dividend income"],
+          correct:0,
+          explain:"A $2 annual dividend on a $50 stock is a 4% yield — it lets you compare dividend income across stocks regardless of their price."
+        }
+      ],
+      intermediate:[
+        {
+          q:"A stock with a very low P/E compared to its industry could mean:",
+          options:["It's always a bargain","It might be undervalued — or the market may be pricing in real problems ahead","It has no earnings","It pays no tax"],
+          correct:1,
+          explain:"A cheap-looking P/E can be a genuine opportunity or a warning sign — it takes more digging to tell which."
+        },
+        {
+          q:"What does \u201CP/B\u201D (price-to-book) ratio compare?",
+          options:["Share price to the company's net asset value on its books","Share price to its brand value","Share price to its stock ticker length","Share price to CEO salary"],
+          correct:0,
+          explain:"P/B compares market price to accounting book value — useful for asset-heavy businesses like banks or real estate."
+        },
+        {
+          q:"Why might two analysts disagree sharply on a stock's \u201Cfair value\u201D?",
+          options:["One of them made a math error by definition","Valuation depends on assumptions about future growth and risk, which reasonably differ","Fair value is a fixed number set by regulators","Only one analyst is allowed to be right"],
+          correct:1,
+          explain:"Valuation isn't a single formula — it's built on assumptions about the future, so reasonable analysts can land on different numbers."
+        }
+      ]
+    },
+    {
+      title:"Investment types",
+      sub:"Stocks, ETFs, metals, crypto, bonds",
+      learnMore:"Not all investments play the same role. Company stocks hand you ownership and a claim on future growth, with no ceiling and no floor. Government bonds do the opposite: you're lending money for a fixed return, trading upside for predictability. ETFs sit in between as a wrapper — a single tradeable basket that can hold dozens or thousands of underlying stocks or bonds at once, so you get instant diversification without buying each piece yourself. Gold and silver behave differently again: they don't pay you anything and don't grow a business, but many investors hold them as a hedge, a store of value when everything else feels uncertain. Cryptocurrency is the newest and most distinct of the group — it isn't a claim on any company's profits or backed by any government, so its value rests entirely on supply, demand, and belief in the technology behind it. None of these is simply \u201Cbetter\u201D than another; they behave differently in different conditions, which is exactly why mixing them, deliberately, is itself a strategy.",
+      questions:[
+        {
+          q:"What is the main difference between owning a company stock and owning a government bond?",
+          options:["A stock is ownership with variable returns; a bond is a loan with a set interest payment","They are the same, just different names","Bonds can only be purchased by governments","Stocks are always safer than bonds"],
+          correct:0,
+          explain:"Stocks make you a part-owner riding the company's ups and downs. Bonds make you a lender, typically for a fixed interest rate over a set term."
+        },
+        {
+          q:"What is an ETF (exchange-traded fund)?",
+          options:["A single company's stock","A basket of many assets — like stocks or bonds — that trades on an exchange like a single stock","A type of savings account","A cryptocurrency"],
+          correct:1,
+          explain:"An ETF bundles many holdings into one tradeable security, giving instant diversification without buying each underlying asset separately."
+        },
+        {
+          q:"What role do gold and silver typically play in a portfolio?",
+          options:["High-growth assets expected to multiply quickly","A store of value some investors use to hedge against inflation or uncertainty","A type of company stock","A guaranteed fixed income"],
+          correct:1,
+          explain:"Precious metals don't produce earnings or interest — they're usually held as a hedge, and their price is driven by supply, demand, and sentiment."
+        },
+        {
+          q:"What makes cryptocurrency different from a traditional stock?",
+          options:["It represents no ownership in a company and isn't backed by company earnings or government-issued currency","It always pays a dividend","It's regulated identically to stocks worldwide","It has no price volatility"],
+          correct:0,
+          explain:"Crypto isn't a claim on a company's profits — its value comes from supply, demand, and belief in the underlying network, a fundamentally different asset class."
+        },
+        {
+          q:"Which of these is generally considered the most conservative, income-focused investment type?",
+          options:["Cryptocurrency","Government bonds","Individual growth stocks","Precious metals"],
+          correct:1,
+          explain:"Government bonds, especially from stable economies, are typically viewed as lower-risk — steady, predictable interest rather than high growth potential."
+        }
+      ],
+      intermediate:[
+        {
+          q:"Why might an investor hold both stocks and bonds together?",
+          options:["Bonds and stocks often behave differently in downturns, so mixing them can smooth overall portfolio swings","It's required by every broker","Bonds always outperform stocks","There's no reason, they're identical"],
+          correct:0,
+          explain:"Bonds have historically cushioned some stock downturns, which is why a mixed strategy is common for balancing growth and stability."
+        },
+        {
+          q:"What's a key structural risk specific to many crypto assets that traditional stocks don't share?",
+          options:["Exchange or wallet security and custody risk, alongside limited regulatory protection","They can never be sold","They are only available on weekdays","They pay corporate taxes"],
+          correct:0,
+          explain:"Beyond price swings, crypto adds risks around exchange hacks, lost keys, and thinner regulatory safety nets compared to listed securities."
+        },
+        {
+          q:"An ETF that tracks gold prices without holding physical metal is exposed to which extra risk versus owning gold directly?",
+          options:["None, they're identical","Counterparty or fund-structure risk from how the ETF is built","It pays a mandatory dividend","It can't be traded on exchanges"],
+          correct:1,
+          explain:"Depending on structure, a gold ETF may rely on derivatives or unallocated holdings rather than physical bars — worth understanding upfront."
+        }
+      ]
+    },
+    {
+      title:"Getting started",
+      sub:"Platforms & tools",
+      learnMore:"The gap between wanting to invest and actually doing it is usually smaller than it feels. Opening an account on a European platform — Bitvavo and Kraken are two well-known names — typically takes a verified ID, a linked bank account, and a few minutes of your time; the identity check (KYC) is a routine legal requirement everywhere, not a red flag specific to any one platform. From there, a small transaction fee applies whenever you actually buy or sell, so it's worth a quick glance at a platform's fee page before committing, since those small percentages add up over many trades or many years. Plenty of investors also lean on separate tools purely for research: TradingView for charting price movements, Yahoo Finance for free quotes, news, and company fundamentals — neither requires you to trade through them, they're just for looking. Put those pieces together — a verified account, an understanding of fees, and a place to do your homework — and you have everything you actually need to place your first trade.",
+      questions:[
+        {
+          q:"What do you typically need to open an account on a European trading or crypto platform?",
+          options:["A registered business and a lawyer","A verified ID, a bank account to fund it, and a few minutes to sign up","A minimum of ten thousand euros","A referral from an existing professional trader"],
+          correct:1,
+          explain:"Most platforms — like Bitvavo or Kraken — just need identity verification and a linked bank account. Sign-up itself is usually free and takes minutes."
+        },
+        {
+          q:"Why do platforms require identity verification (KYC)?",
+          options:["To sell your data to advertisers","It's a legal requirement to prevent fraud and money laundering","Just to make sign-up harder","Only crypto platforms require it, not stock brokers"],
+          correct:1,
+          explain:"\u201CKnow Your Customer\u201D checks are a regulatory requirement across both stock brokers and crypto exchanges — a routine step, not a red flag."
+        },
+        {
+          q:"What are transaction (trading) fees?",
+          options:["A one-time signup cost only","A small cost charged per trade, often a percentage of the amount or a flat fee","A tax paid directly to the government","A fee only advanced traders pay"],
+          correct:1,
+          explain:"Nearly every platform charges something per trade — usually a small percentage or flat fee — worth checking a platform's fee schedule before you start."
+        },
+        {
+          q:"What is TradingView commonly used for?",
+          options:["Buying groceries online","Charting and analyzing price movements across stocks, crypto, and other markets","Filing taxes","Verifying your identity for a broker"],
+          correct:1,
+          explain:"TradingView is a widely used charting tool — many investors use it to study price trends even if they execute trades on a separate platform."
+        },
+        {
+          q:"What is Yahoo Finance typically used for?",
+          options:["Sending international bank transfers","Free access to stock quotes, financial news, and company fundamentals","Verifying crypto wallet addresses","Placing high-frequency trades"],
+          correct:1,
+          explain:"Yahoo Finance is a popular free source for quotes, news, and basic company financials — a common starting point for research."
+        }
+      ],
+      intermediate:[
+        {
+          q:"What's a practical reason to compare fee structures across platforms before choosing one?",
+          options:["Fees are identical everywhere so it doesn't matter","Small percentage fees compound over many trades and can meaningfully affect long-term returns","Only professional traders pay fees","Fees are refunded after a year"],
+          correct:1,
+          explain:"A seemingly small fee difference per trade adds up significantly if you trade often or invest over decades — worth a few minutes of comparison upfront."
+        },
+        {
+          q:"What's a \u201Climit order\u201D useful for when starting out on a new platform?",
+          options:["Guaranteeing the lowest possible price always","Controlling exactly the price you're willing to buy or sell at, rather than accepting whatever the market offers","Avoiding all fees","Bypassing identity verification"],
+          correct:1,
+          explain:"For a new trader still getting comfortable with a platform, a limit order adds a safety net — you won't get filled at a price you didn't intend."
+        },
+        {
+          q:"Why might an investor use more than one platform or tool — say, a broker plus TradingView?",
+          options:["It's required by law","Charting/research tools and execution platforms often specialize — one for analysis, another for placing trades","To pay double the fees on purpose","Because no platform allows both buying and viewing charts"],
+          correct:1,
+          explain:"Many investors research and chart on one tool and execute trades on their broker or exchange of choice — the two jobs don't have to be in the same place."
+        }
+      ]
+    }
+  ];
+
+  var SPX_DATA = [
+    {label:"Aug 2021", value:4454.21},
+    {label:"Sep 2021", value:4445.54},
+    {label:"Oct 2021", value:4460.71},
+    {label:"Nov 2021", value:4667.39},
+    {label:"Dec 2021", value:4674.77},
+    {label:"Jan 2022", value:4573.82},
+    {label:"Feb 2022", value:4435.98},
+    {label:"Mar 2022", value:4391.27},
+    {label:"Apr 2022", value:4391.30},
+    {label:"May 2022", value:4040.36},
+    {label:"Jun 2022", value:3898.95},
+    {label:"Jul 2022", value:3911.73},
+    {label:"Aug 2022", value:4158.56},
+    {label:"Sep 2022", value:3850.52},
+    {label:"Oct 2022", value:3726.05},
+    {label:"Nov 2022", value:3917.49},
+    {label:"Dec 2022", value:3912.38},
+    {label:"Jan 2023", value:3960.66},
+    {label:"Feb 2023", value:4079.68},
+    {label:"Mar 2023", value:3968.56},
+    {label:"Apr 2023", value:4121.47},
+    {label:"May 2023", value:4146.17},
+    {label:"Jun 2023", value:4345.37},
+    {label:"Jul 2023", value:4508.08},
+    {label:"Aug 2023", value:4426.24},
+    {label:"Sep 2023", value:4409.10},
+    {label:"Oct 2023", value:4258.98},
+    {label:"Nov 2023", value:4460.06},
+    {label:"Dec 2023", value:4685.05},
+    {label:"Jan 2024", value:4804.49},
+    {label:"Feb 2024", value:5011.96},
+    {label:"Mar 2024", value:5170.57},
+    {label:"Apr 2024", value:5095.46},
+    {label:"May 2024", value:5235.23},
+    {label:"Jun 2024", value:5415.14},
+    {label:"Jul 2024", value:5542.89},
+    {label:"Aug 2024", value:5502.17},
+    {label:"Sep 2024", value:5626.12},
+    {label:"Oct 2024", value:5792.32},
+    {label:"Nov 2024", value:5929.92},
+    {label:"Dec 2024", value:6010.91},
+    {label:"Jan 2025", value:5979.52},
+    {label:"Feb 2025", value:6038.69},
+    {label:"Mar 2025", value:5683.98},
+    {label:"Apr 2025", value:5369.50},
+    {label:"May 2025", value:5810.92},
+    {label:"Jun 2025", value:6029.95},
+    {label:"Jul 2025", value:6296.50},
+    {label:"Aug 2025", value:6408.95},
+    {label:"Sep 2025", value:6584.02},
+    {label:"Oct 2025", value:6735.69},
+    {label:"Nov 2025", value:6740.89},
+    {label:"Dec 2025", value:6853.03},
+    {label:"Jan 2026", value:6929.12},
+    {label:"Feb 2026", value:6893.81},
+    {label:"Mar 2026", value:6654.42},
+    {label:"Apr 2026", value:6957.01},
+    {label:"May 2026", value:7412.55},
+    {label:"Jun 2026", value:7450.03},
+    {label:"Jul 2026", value:7513.50}
+  ];
+
+  var GOALS = [
+    { id:'what-is-stock', label:'What a stock actually is', unit:0 },
+    { id:'market-moves', label:'Why prices move the way they do', unit:1 },
+    { id:'build-portfolio', label:'How to build a diversified portfolio', unit:2 },
+    { id:'analyze-stocks', label:'How to analyze a stock before buying', unit:3 },
+    { id:'investment-types', label:'Which investment types exist?', unit:4 },
+    { id:'getting-started', label:'How do I get started, and which platform should I use?', unit:5 },
+    { id:'risk-levels', label:'What are low risk vs high risk investments, as a beginner or a professional?', unit:null, playdata:true },
+    { id:'taxes', label:'How taxes work on investment gains', unit:null }
+  ];
+
+  var MAPPABLE_GOAL_COUNT = GOALS.filter(function(g){ return g.unit !== null; }).length;
+
+  var STORAGE_KEY = "stockguru_state_v1";
+  var state = null;
+
+  function defaultState(){
+    return {
+      score:0,
+      streak:0,
+      lastActiveDay:null,
+      goals:[],
+      onboarded:false,
+      priorExperience:null,
+      feedback:[],
+      progress:{}
+    };
+  }
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if(raw){
+        var parsed = JSON.parse(raw);
+        var d = defaultState();
+        for(var k in d){ if(!(k in parsed)) parsed[k] = d[k]; }
+        return parsed;
+      }
+    }catch(e){}
+    return defaultState();
+  }
+
+  function saveState(){
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+  }
+
+  function todayStr(){
+    return new Date().toISOString().slice(0,10);
+  }
+
+  function daysBetween(a,b){
+    var d1 = new Date(a), d2 = new Date(b);
+    return Math.round((d2-d1)/86400000);
+  }
+
+  function getProgress(i){
+    if(!state.progress[i]) state.progress[i] = { beginnerDone:false, beginnerPct:0, intermediateDone:false, intermediatePct:0, advancedDone:false, advancedPct:0 };
+    return state.progress[i];
+  }
+
+  var els = {
+    home: document.getElementById('home-screen'),
+    quiz: document.getElementById('quiz-screen'),
+    summary: document.getElementById('summary-screen'),
+    welcomeScreen: document.getElementById('welcome-screen'),
+    welcomeContinueBtn: document.getElementById('welcome-continue-btn'),
+    welcomeIntroBtn: document.getElementById('welcome-intro-btn'),
+    brandBtn: document.getElementById('brand-btn'),
+    experienceScreen: document.getElementById('experience-screen'),
+    experienceContinueBtn: document.getElementById('experience-continue-btn'),
+    goalsScreen: document.getElementById('goals-screen'),
+    goalsList: document.getElementById('goals-list'),
+    goalsContinueBtn: document.getElementById('goals-continue-btn'),
+    homeSub: document.getElementById('home-sub'),
+    goalsNote: document.getElementById('goals-note'),
+    units: document.getElementById('units-container'),
+    playdataScreen: document.getElementById('playdata-screen'),
+    feedbackScreen: document.getElementById('feedback-screen'),
+    topicsList: document.getElementById('topics-list'),
+    generalFeedbackInput: document.getElementById('general-feedback-input'),
+    generalFeedbackSubmit: document.getElementById('general-feedback-submit'),
+    generalFeedbackThanks: document.getElementById('general-feedback-thanks'),
+    lessonFeedbackBlock: document.getElementById('lesson-feedback'),
+    lessonFeedbackInput: document.getElementById('lesson-feedback-input'),
+    lessonFeedbackSubmit: document.getElementById('lesson-feedback-submit'),
+    lessonFeedbackThanks: document.getElementById('lesson-feedback-thanks'),
+    learnMoreBtn: document.getElementById('learn-more-btn'),
+    learnMoreText: document.getElementById('learn-more-text'),
+    speakBtn: document.getElementById('speak-btn'),
+    bottomNav: document.getElementById('bottom-nav'),
+    navGoals: document.getElementById('nav-goals'),
+    navLearn: document.getElementById('nav-learn'),
+    navPlaydata: document.getElementById('nav-playdata'),
+    navFeedback: document.getElementById('nav-feedback'),
+    navGoalsIcon: document.getElementById('nav-goals-icon'),
+    navLearnIcon: document.getElementById('nav-learn-icon'),
+    navPlaydataIcon: document.getElementById('nav-playdata-icon'),
+    navFeedbackIcon: document.getElementById('nav-feedback-icon'),
+    exitBtn: document.getElementById('exit-btn'),
+    progressTrack: document.getElementById('progress-track'),
+    eyebrow: document.getElementById('quiz-eyebrow'),
+    questionText: document.getElementById('question-text'),
+    optionsContainer: document.getElementById('options-container'),
+    feedbackBox: document.getElementById('feedback-box'),
+    feedbackHead: document.getElementById('feedback-head'),
+    feedbackText: document.getElementById('feedback-text'),
+    continueBtn: document.getElementById('continue-btn'),
+    summaryUnit: document.getElementById('summary-unit'),
+    congratsBanner: document.getElementById('congrats-banner'),
+    closeStrip: document.getElementById('close-strip'),
+    sumCorrect: document.getElementById('sum-correct'),
+    sumXp: document.getElementById('sum-xp'),
+    sumStreak: document.getElementById('sum-streak'),
+    backHomeBtn: document.getElementById('back-home-btn'),
+    levelStat: document.getElementById('level-stat'),
+    levelVal: document.getElementById('level-val'),
+    streak: document.getElementById('streak-val'),
+    score: document.getElementById('score-val')
+  };
+
+  var session = null;
+
+  function checkSVG(){
+    return '<svg width="22" height="22" viewBox="0 0 22 22" fill="none">'+
+      '<path d="M4 11.5L9 16.5L18 6.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>'+
+      '</svg>';
+  }
+
+  function lockSVG(){
+    return '<svg width="12" height="13" viewBox="0 0 20 22" fill="none">'+
+      '<rect x="2" y="9" width="16" height="11" rx="2" stroke="currentColor" stroke-width="2"/>'+
+      '<path d="M5 9V6a5 5 0 0110 0v3" stroke="currentColor" stroke-width="2" fill="none"/>'+
+      '</svg>';
+  }
+
+  function trendSVG(size){
+    size = size || 20;
+    return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 20 20" fill="none">'+
+      '<polyline points="2,15 7,8 11,12 18,3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>'+
+      '<circle cx="18" cy="3" r="1.6" fill="currentColor"/>'+
+      '</svg>';
+  }
+
+  function targetSVG(){
+    return '<svg width="20" height="20" viewBox="0 0 20 20" fill="none">'+
+      '<circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.6"/>'+
+      '<circle cx="10" cy="10" r="4.5" stroke="currentColor" stroke-width="1.6"/>'+
+      '<circle cx="10" cy="10" r="1.4" fill="currentColor"/>'+
+      '</svg>';
+  }
+
+  function feedbackSVG(){
+    return '<svg width="20" height="20" viewBox="0 0 20 20" fill="none">'+
+      '<path d="M3 4h14a1 1 0 011 1v8a1 1 0 01-1 1H8l-4 3v-3H3a1 1 0 01-1-1V5a1 1 0 011-1z" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round"/>'+
+      '</svg>';
+  }
+
+  els.navGoalsIcon.innerHTML = targetSVG();
+  els.navLearnIcon.innerHTML = trendSVG(20);
+  els.navPlaydataIcon.innerHTML = trendSVG(20);
+  els.navFeedbackIcon.innerHTML = feedbackSVG();
+
+  function computeUserLevel(){
+    var total = SECTIONS.length;
+    var allBeginnerDone = true;
+    var allIntermediateDone = true;
+    for(var i=0;i<total;i++){
+      var p = getProgress(i);
+      if(!p.beginnerDone) allBeginnerDone = false;
+      if(!p.intermediateDone) allIntermediateDone = false;
+    }
+    if(!allBeginnerDone) return 'Beginner';
+    if(!allIntermediateDone) return 'Intermediate';
+    return 'Advanced';
+  }
+
+  function isAllBeginnerDone(){
+    for(var i=0;i<SECTIONS.length;i++){
+      if(!getProgress(i).beginnerDone) return false;
+    }
+    return true;
+  }
+
+  function updateTopbar(){
+    els.streak.textContent = state.streak + 'd';
+    els.score.textContent = state.score;
+    var level = computeUserLevel();
+    els.levelVal.textContent = level;
+    els.levelStat.classList.remove('intermediate','advanced');
+    if(level === 'Intermediate') els.levelStat.classList.add('intermediate');
+    if(level === 'Advanced') els.levelStat.classList.add('advanced');
+  }
+
+  function computeRecommendation(){
+    var pickedGoals = (state.goals || []).map(function(id){
+      return GOALS.filter(function(g){ return g.id === id; })[0];
+    }).filter(Boolean);
+
+    var matchedSections = pickedGoals.filter(function(g){ return g.unit !== null; });
+    var uniqueSections = [];
+    matchedSections.forEach(function(g){ if(uniqueSections.indexOf(g.unit) === -1) uniqueSections.push(g.unit); });
+
+    var recommendAll = uniqueSections.length >= (Math.floor(MAPPABLE_GOAL_COUNT/2) + 1);
+
+    var recommendedIndex = null;
+    if(!recommendAll){
+      for(var i=0;i<uniqueSections.length;i++){
+        if(!getProgress(uniqueSections[i]).beginnerDone){ recommendedIndex = uniqueSections[i]; break; }
+      }
+    }
+
+    return { pickedGoals:pickedGoals, uniqueSections:uniqueSections, recommendAll:recommendAll, recommendedIndex:recommendedIndex };
+  }
+
+  function updateHomeIntro(){
+    var picked = state.goals || [];
+    var rec = computeRecommendation();
+
+    if(picked.length === 0){
+      els.homeSub.textContent = 'Five-minute lessons on the fundamentals — work through each section at your own pace.';
+      els.goalsNote.classList.add('hidden');
+      return;
+    }
+
+    if(rec.recommendAll){
+      els.homeSub.textContent = "You've picked a lot of goals — we'd recommend working through all the sections below.";
+    } else if(rec.recommendedIndex !== null){
+      els.homeSub.textContent = 'Based on what you picked, start with ' + SECTIONS[rec.recommendedIndex].title.toLowerCase() + ' below.';
+    } else {
+      els.homeSub.textContent = 'Five-minute lessons on the fundamentals — work through each section at your own pace.';
+    }
+
+    var unmapped = rec.pickedGoals.filter(function(g){ return g.unit === null && !g.playdata; });
+    var playdataGoals = rec.pickedGoals.filter(function(g){ return g.playdata; });
+
+    var notes = [];
+    if(playdataGoals.length){
+      notes.push("Curious about risk vs. return? Check the Play with data tab — it's under construction but on its way.");
+    }
+    if(unmapped.length){
+      notes.push("These aren't covered by these lessons yet: " + unmapped.map(function(g){ return g.label.toLowerCase(); }).join(', ') + '.');
+    }
+
+    if(notes.length){
+      els.goalsNote.classList.remove('hidden');
+      els.goalsNote.innerHTML = notes.map(function(n){ return '<p>'+n+'</p>'; }).join('');
+    } else {
+      els.goalsNote.classList.add('hidden');
+    }
+  }
+
+  function renderGoals(){
+    var selected = {};
+    (state.goals || []).forEach(function(id){ selected[id] = true; });
+
+    els.goalsList.innerHTML = '';
+    GOALS.forEach(function(goal){
+      var card = document.createElement('div');
+      card.className = 'goal-card' + (selected[goal.id] ? ' selected' : '');
+      card.innerHTML =
+        '<span class="goal-check">'+(selected[goal.id] ? checkSVG() : '')+'</span>'+
+        '<span>'+goal.label+'</span>';
+      card.addEventListener('click', function(){
+        selected[goal.id] = !selected[goal.id];
+        card.classList.toggle('selected', selected[goal.id]);
+        card.querySelector('.goal-check').innerHTML = selected[goal.id] ? checkSVG() : '';
+        var anySelected = Object.keys(selected).some(function(k){ return selected[k]; });
+        els.goalsContinueBtn.disabled = !anySelected;
+      });
+      els.goalsList.appendChild(card);
+    });
+
+    els.goalsContinueBtn.disabled = !Object.keys(selected).some(function(k){ return selected[k]; });
+
+    els.goalsContinueBtn.onclick = function(){
+      state.goals = Object.keys(selected).filter(function(k){ return selected[k]; });
+      state.onboarded = true;
+      saveState();
+      navigateTo('home');
+    };
+  }
+
+  function renderHome(){
+    els.units.innerHTML = '';
+    var rec = computeRecommendation();
+
+    SECTIONS.forEach(function(section, uIndex){
+      var block = document.createElement('div');
+      block.className = 'unit-block';
+
+      var label = document.createElement('div');
+      label.className = 'unit-label';
+      label.innerHTML =
+        '<span class="unit-number mono">section '+(uIndex+1)+'</span>'+
+        '<span><span class="unit-title">'+section.title+'</span><br><span class="unit-sub">'+section.sub+'</span></span>';
+      block.appendChild(label);
+
+      var prog = getProgress(uIndex);
+      var isRecommended = !rec.recommendAll && rec.recommendedIndex === uIndex;
+
+      var item = document.createElement('div');
+      item.className = 'path-item';
+
+      var node = document.createElement('div');
+      node.className = 'node ' + (prog.beginnerDone ? 'done' : (isRecommended ? 'recommended' : ''));
+      node.innerHTML = trendSVG(30);
+      item.appendChild(node);
+
+      if(isRecommended){
+        var tag = document.createElement('div');
+        tag.className = 'recommended-tag';
+        tag.textContent = 'Recommended for you';
+        item.appendChild(tag);
+      }
+
+      var status = document.createElement('div');
+      status.className = 'node-status' + (prog.beginnerDone ? ' done' : '');
+      status.textContent = prog.beginnerDone ? (prog.beginnerPct + '% best score') : 'Not started yet';
+      item.appendChild(status);
+
+      var tierRow = document.createElement('div');
+      tierRow.className = 'tier-row';
+
+      var beginnerBtn = document.createElement('button');
+      beginnerBtn.className = 'tier-btn' + (prog.beginnerDone ? ' done' : '');
+      beginnerBtn.textContent = prog.beginnerDone ? 'Beginner \u2713' : 'Beginner';
+      beginnerBtn.addEventListener('click', function(){ startLesson(uIndex, 'beginner'); });
+      tierRow.appendChild(beginnerBtn);
+
+      var intermediateBtn = document.createElement('button');
+      var intLocked = !prog.beginnerDone;
+      intermediateBtn.className = 'tier-btn' + (intLocked ? ' locked' : (prog.intermediateDone ? ' done' : ''));
+      intermediateBtn.innerHTML = intLocked ? (lockSVG() + '<span>Intermediate</span>') : (prog.intermediateDone ? 'Intermediate \u2713' : 'Intermediate');
+      if(intLocked){
+        intermediateBtn.disabled = true;
+      } else {
+        intermediateBtn.addEventListener('click', function(){ startLesson(uIndex, 'intermediate'); });
+      }
+      tierRow.appendChild(intermediateBtn);
+
+      var advancedBtn = document.createElement('button');
+      advancedBtn.className = 'tier-btn locked';
+      advancedBtn.innerHTML = lockSVG() + '<span>Advanced</span>';
+      advancedBtn.disabled = true;
+      advancedBtn.title = 'Coming soon';
+      tierRow.appendChild(advancedBtn);
+
+      item.appendChild(tierRow);
+      block.appendChild(item);
+      els.units.appendChild(block);
+    });
+  }
+
+  function renderSPXChart(){
+    var el = document.getElementById('spx-chart');
+    if(!el || el.dataset.rendered) return;
+
+    var data = SPX_DATA;
+    var w = 460, h = 190, padL = 46, padR = 8, padT = 14, padB = 22;
+    var values = data.map(function(d){ return d.value; });
+    var min = Math.min.apply(null, values);
+    var max = Math.max.apply(null, values);
+    var plotW = w - padL - padR;
+    var plotH = h - padT - padB;
+
+    function px(i){ return padL + (i/(data.length-1)) * plotW; }
+    function py(v){ return padT + plotH - ((v-min)/(max-min)) * plotH; }
+
+    var linePoints = data.map(function(d,i){ return px(i)+','+py(d.value); }).join(' ');
+    var areaPoints = linePoints + ' ' + px(data.length-1)+','+(padT+plotH) + ' ' + px(0)+','+(padT+plotH);
+
+    var svg =
+      '<svg viewBox="0 0 '+w+' '+h+'" width="100%" style="display:block;">' +
+      '<line x1="'+padL+'" y1="'+(padT+plotH)+'" x2="'+(w-padR)+'" y2="'+(padT+plotH)+'" stroke="#C7CCC2" stroke-width="1"/>' +
+      '<polygon points="'+areaPoints+'" fill="#DCEBE3" opacity="0.7"/>' +
+      '<polyline points="'+linePoints+'" fill="none" stroke="#1F7A5C" stroke-width="2"/>' +
+      '<text x="'+padL+'" y="'+(padT+7)+'" font-size="10" fill="#4B564E" font-family="IBM Plex Mono, monospace">'+Math.round(max).toLocaleString()+'</text>' +
+      '<text x="'+padL+'" y="'+(padT+plotH-2)+'" font-size="10" fill="#4B564E" font-family="IBM Plex Mono, monospace">'+Math.round(min).toLocaleString()+'</text>' +
+      '<text x="'+padL+'" y="'+(h-4)+'" font-size="10" fill="#4B564E" font-family="IBM Plex Sans, sans-serif">'+data[0].label+'</text>' +
+      '<text x="'+(w-padR)+'" y="'+(h-4)+'" font-size="10" fill="#4B564E" font-family="IBM Plex Sans, sans-serif" text-anchor="end">'+data[data.length-1].label+'</text>' +
+      '</svg>';
+
+    el.innerHTML = svg;
+    el.dataset.rendered = '1';
+  }
+
+  function renderFeedbackTopics(){
+    feedbackTopicsSelected = {};
+    els.topicsList.innerHTML = '';
+    GOALS.forEach(function(goal){
+      var card = document.createElement('div');
+      card.className = 'topic-card';
+      card.innerHTML =
+        '<span class="topic-tick"></span>'+
+        '<span>'+goal.label+'</span>';
+      card.addEventListener('click', function(){
+        feedbackTopicsSelected[goal.id] = !feedbackTopicsSelected[goal.id];
+        card.classList.toggle('selected', feedbackTopicsSelected[goal.id]);
+        card.querySelector('.topic-tick').innerHTML = feedbackTopicsSelected[goal.id] ? checkSVG() : '';
+      });
+      els.topicsList.appendChild(card);
+    });
+  }
+
+  var feedbackTopicsSelected = {};
+
+  function resetGeneralFeedbackForm(){
+    els.generalFeedbackInput.value = '';
+    els.generalFeedbackThanks.classList.add('hidden');
+    renderFeedbackTopics();
+  }
+
+  function saveFeedback(entry){
+    if(!state.feedback) state.feedback = [];
+    state.feedback.push(entry);
+    saveState();
+  }
+
+  var SCREENS = ['welcomeScreen','experienceScreen','goalsScreen','home','quiz','summary','playdataScreen','feedbackScreen'];
+
+  function renderWelcomeScreen(){
+    if(state.onboarded){
+      els.welcomeContinueBtn.textContent = 'Proceed to app';
+      els.welcomeContinueBtn.onclick = function(){ navigateTo('home'); };
+      els.welcomeIntroBtn.classList.remove('hidden');
+      els.welcomeIntroBtn.onclick = function(){ navigateTo('experience'); };
+    } else {
+      els.welcomeContinueBtn.textContent = 'Get started';
+      els.welcomeContinueBtn.onclick = function(){ navigateTo('experience'); };
+      els.welcomeIntroBtn.classList.add('hidden');
+    }
+  }
+
+  function renderExperienceScreen(){
+    chosenExperience = state.priorExperience;
+    Array.prototype.forEach.call(document.querySelectorAll('.experience-btn'), function(b){
+      b.classList.toggle('selected', b.dataset.value === chosenExperience);
+    });
+    els.experienceContinueBtn.disabled = !chosenExperience;
+    els.experienceContinueBtn.textContent = state.onboarded ? 'Back to app' : 'Continue';
+  }
+
+  function navigateTo(target){
+    if(target !== 'summary') stopSpeaking();
+    SCREENS.forEach(function(key){ els[key].classList.add('hidden'); });
+
+    if(target === 'welcome'){
+      els.welcomeScreen.classList.remove('hidden');
+      renderWelcomeScreen();
+    } else if(target === 'experience'){
+      els.experienceScreen.classList.remove('hidden');
+      renderExperienceScreen();
+    } else if(target === 'goals'){
+      els.goalsScreen.classList.remove('hidden');
+      renderGoals();
+    } else if(target === 'home'){
+      els.home.classList.remove('hidden');
+      updateHomeIntro();
+      renderHome();
+    } else if(target === 'quiz'){
+      els.quiz.classList.remove('hidden');
+    } else if(target === 'summary'){
+      els.summary.classList.remove('hidden');
+    } else if(target === 'playdata'){
+      els.playdataScreen.classList.remove('hidden');
+      renderSPXChart();
+    } else if(target === 'feedback'){
+      els.feedbackScreen.classList.remove('hidden');
+      resetGeneralFeedbackForm();
+    }
+
+    var navTarget = (target === 'quiz' || target === 'summary') ? 'home' : target;
+    [els.navGoals, els.navLearn, els.navPlaydata, els.navFeedback].forEach(function(btn){
+      btn.classList.toggle('active', btn.dataset.target === navTarget);
+    });
+
+    els.bottomNav.classList.toggle('hidden', target === 'welcome' || target === 'experience');
+  }
+
+  els.brandBtn.addEventListener('click', function(){
+    navigateTo('welcome');
+  });
+
+  var chosenExperience = null;
+  Array.prototype.forEach.call(document.querySelectorAll('.experience-btn'), function(btn){
+    btn.addEventListener('click', function(){
+      chosenExperience = btn.dataset.value;
+      Array.prototype.forEach.call(document.querySelectorAll('.experience-btn'), function(b){
+        b.classList.toggle('selected', b === btn);
+      });
+      els.experienceContinueBtn.disabled = false;
+    });
+  });
+
+  els.experienceContinueBtn.addEventListener('click', function(){
+    state.priorExperience = chosenExperience;
+    saveState();
+    navigateTo(state.onboarded ? 'home' : 'goals');
+  });
+
+  els.generalFeedbackSubmit.addEventListener('click', function(){
+    var text = els.generalFeedbackInput.value.trim();
+    var topics = Object.keys(feedbackTopicsSelected).filter(function(k){ return feedbackTopicsSelected[k]; });
+    if(!text && topics.length === 0) return;
+    saveFeedback({ type:'general', topics:topics, text:text, date:todayStr() });
+    els.generalFeedbackThanks.classList.remove('hidden');
+    els.generalFeedbackInput.value = '';
+    renderFeedbackTopics();
+  });
+
+  els.lessonFeedbackSubmit.addEventListener('click', function(){
+    var text = els.lessonFeedbackInput.value.trim();
+    if(!text) return;
+    saveFeedback({ type:'lesson', unit: els.lessonFeedbackBlock.dataset.unitIndex, text:text, date:todayStr() });
+    els.lessonFeedbackThanks.classList.remove('hidden');
+    els.lessonFeedbackInput.value = '';
+  });
+
+  [els.navGoals, els.navLearn, els.navPlaydata, els.navFeedback].forEach(function(btn){
+    btn.addEventListener('click', function(){
+      navigateTo(btn.dataset.target);
+    });
+  });
+
+  function startLesson(unitIndex, level){
+    var section = SECTIONS[unitIndex];
+    var questionSet = level === 'intermediate' ? section.intermediate : section.questions;
+    session = {
+      unitIndex: unitIndex,
+      level: level,
+      qIndex: 0,
+      answers: [],
+      answered: false,
+      questionSet: questionSet
+    };
+    navigateTo('quiz');
+    buildProgressTrack(questionSet.length);
+    renderQuestion();
+  }
+
+  function buildProgressTrack(count){
+    els.progressTrack.innerHTML = '';
+    for(var i=0;i<count;i++){
+      var seg = document.createElement('div');
+      seg.className = 'progress-seg';
+      seg.dataset.index = i;
+      els.progressTrack.appendChild(seg);
+    }
+  }
+
+  function renderQuestion(){
+    var section = SECTIONS[session.unitIndex];
+    var q = session.questionSet[session.qIndex];
+    session.answered = false;
+
+    els.eyebrow.textContent = section.title.toLowerCase() + ' \u00B7 ' + session.level + ' \u2014 question ' + (session.qIndex+1) + ' of ' + session.questionSet.length;
+    els.questionText.textContent = q.q;
+    els.optionsContainer.innerHTML = '';
+    els.feedbackBox.className = 'feedback';
+    els.continueBtn.textContent = 'Check';
+    els.continueBtn.disabled = true;
+    els.continueBtn.classList.remove('go');
+
+    q.options.forEach(function(opt, i){
+      var btn = document.createElement('button');
+      btn.className = 'option';
+      btn.textContent = opt;
+      btn.addEventListener('click', function(){
+        if(session.answered) return;
+        Array.prototype.forEach.call(els.optionsContainer.children, function(c){ c.style.borderColor = ''; });
+        btn.style.borderColor = 'var(--ink)';
+        els.continueBtn.disabled = false;
+        els.optionsContainer.dataset.selected = i;
+      });
+      els.optionsContainer.appendChild(btn);
+    });
+
+    els.continueBtn.onclick = function(){
+      if(!session.answered){
+        var sel = parseInt(els.optionsContainer.dataset.selected, 10);
+        if(isNaN(sel)) return;
+        checkAnswer(sel, q);
+      } else {
+        advance();
+      }
+    };
+  }
+
+  function checkAnswer(selected, q){
+    session.answered = true;
+    var isCorrect = selected === q.correct;
+    session.answers.push(isCorrect);
+
+    if(isCorrect){
+      state.score += 10;
+      saveState();
+      updateTopbar();
+    }
+
+    Array.prototype.forEach.call(els.optionsContainer.children, function(c, i){
+      c.classList.add('disabled');
+      if(i === q.correct) c.classList.add('correct');
+      else if(i === selected) c.classList.add('incorrect');
+    });
+
+    var seg = els.progressTrack.children[session.qIndex];
+    seg.classList.add(isCorrect ? 'fill' : 'wrong');
+
+    els.feedbackBox.classList.add('show', isCorrect ? 'correct' : 'incorrect');
+    els.feedbackHead.textContent = isCorrect ? 'Correct' : 'Not quite';
+    els.feedbackText.textContent = q.explain;
+
+    els.continueBtn.textContent = (session.qIndex < session.questionSet.length - 1) ? 'Continue' : 'See results';
+    els.continueBtn.classList.add('go');
+    els.continueBtn.disabled = false;
+  }
+
+  function advance(){
+    if(session.qIndex < session.questionSet.length - 1){
+      session.qIndex++;
+      renderQuestion();
+    } else {
+      finishLesson();
+    }
+  }
+
+  function finishLesson(){
+    var correctCount = session.answers.filter(Boolean).length;
+    var total = session.answers.length;
+    var earnedScore = correctCount * 10;
+    var pct = Math.round((correctCount/total)*100);
+
+    var today = todayStr();
+    if(state.lastActiveDay === null){
+      state.streak = 1;
+    } else {
+      var diff = daysBetween(state.lastActiveDay, today);
+      if(diff === 0){
+        // already active today
+      } else if(diff === 1){
+        state.streak += 1;
+      } else {
+        state.streak = 1;
+      }
+    }
+    state.lastActiveDay = today;
+
+    var wasAllBeginnerDoneBefore = isAllBeginnerDone();
+
+    var prog = getProgress(session.unitIndex);
+    if(session.level === 'beginner'){
+      prog.beginnerDone = true;
+      prog.beginnerPct = Math.max(prog.beginnerPct, pct);
+    } else if(session.level === 'intermediate'){
+      prog.intermediateDone = true;
+      prog.intermediatePct = Math.max(prog.intermediatePct, pct);
+    }
+
+    var isAllBeginnerDoneNow = isAllBeginnerDone();
+    var justCompletedAllBeginner = isAllBeginnerDoneNow && !wasAllBeginnerDoneBefore;
+
+    saveState();
+    updateTopbar();
+
+    var section = SECTIONS[session.unitIndex];
+    els.summaryUnit.textContent = section.title.toLowerCase() + ' \u00B7 ' + session.level;
+    els.closeStrip.innerHTML = '';
+    session.answers.forEach(function(ok){
+      var bar = document.createElement('div');
+      bar.className = 'close-bar ' + (ok ? 'win' : 'loss');
+      bar.style.height = (ok ? (34 + Math.random()*24) : (18 + Math.random()*16)) + 'px';
+      els.closeStrip.appendChild(bar);
+    });
+    els.sumCorrect.textContent = correctCount + '/' + total;
+    els.sumXp.textContent = '+' + earnedScore;
+    els.sumStreak.textContent = state.streak + 'd';
+
+    var isGettingStarted = session.unitIndex === 5 && session.level === 'beginner';
+    if(justCompletedAllBeginner){
+      els.congratsBanner.textContent = "Congratulations — you've completed every beginner section. You're ready to get going!";
+      els.congratsBanner.classList.add('show');
+    } else if(isGettingStarted){
+      els.congratsBanner.textContent = "Congratulations — you're ready to get going!";
+      els.congratsBanner.classList.add('show');
+    } else {
+      els.congratsBanner.classList.remove('show');
+    }
+
+    els.lessonFeedbackBlock.dataset.unitIndex = session.unitIndex;
+    els.lessonFeedbackInput.value = '';
+    els.lessonFeedbackThanks.classList.add('hidden');
+    var unitLabel = section.title.toLowerCase();
+    els.lessonFeedbackBlock.querySelector('.lesson-feedback-label').textContent =
+      'What would you like to learn more about in ' + unitLabel + '?';
+
+    stopSpeaking();
+    els.learnMoreText.textContent = section.learnMore || '';
+    els.learnMoreText.classList.add('hidden');
+    els.learnMoreBtn.textContent = 'Learn more';
+    els.speakBtn.textContent = 'Listen';
+
+    navigateTo('summary');
+  }
+
+  function stopSpeaking(){
+    if('speechSynthesis' in window){
+      window.speechSynthesis.cancel();
+    }
+  }
+
+  if(!('speechSynthesis' in window)){
+    els.speakBtn.classList.add('hidden');
+  }
+
+  els.learnMoreBtn.addEventListener('click', function(){
+    var isHidden = els.learnMoreText.classList.contains('hidden');
+    els.learnMoreText.classList.toggle('hidden', !isHidden);
+    els.learnMoreBtn.textContent = isHidden ? 'Hide' : 'Learn more';
+  });
+
+  els.speakBtn.addEventListener('click', function(){
+    if(!('speechSynthesis' in window)) return;
+    if(window.speechSynthesis.speaking){
+      stopSpeaking();
+      els.speakBtn.textContent = 'Listen';
+      return;
+    }
+    var text = els.learnMoreText.textContent;
+    if(!text) return;
+    var utterance = new SpeechSynthesisUtterance(text);
+    utterance.onend = function(){ els.speakBtn.textContent = 'Listen'; };
+    utterance.onerror = function(){ els.speakBtn.textContent = 'Listen'; };
+    window.speechSynthesis.speak(utterance);
+    els.speakBtn.textContent = 'Stop';
+  });
+
+  els.exitBtn.addEventListener('click', function(){
+    stopSpeaking();
+    navigateTo('home');
+  });
+
+  els.backHomeBtn.addEventListener('click', function(){
+    stopSpeaking();
+    navigateTo('home');
+  });
+
+  state = loadState();
+  updateTopbar();
+  navigateTo(state.onboarded ? 'home' : 'welcome');
+
+})();
