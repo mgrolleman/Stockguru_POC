@@ -6,10 +6,13 @@ net/operating margin, analyst rating and an outlook comment. If a value can't be
 previous value from data.json is kept, so the table never loses data.
 Usage: python scripts/fetch_data.py [path/to/data.json]
 """
-import json, sys, datetime, time
+import json, os, sys, datetime, time
 import yfinance as yf
 
 PATH = sys.argv[1] if len(sys.argv) > 1 else 'data.json'
+HIST_PATH = os.path.join(os.path.dirname(os.path.abspath(PATH)), 'history.json')
+HIST = {}      # ticker -> {'s': first week-end date, 'v': weekly closes (3 years)}
+FCY = set()    # financial currencies seen, so we can fetch their EUR rate
 RATING = {'strong_buy': 'Strong Buy', 'buy': 'Buy', 'hold': 'Hold', 'underperform': 'Sell', 'sell': 'Sell', 'strong_sell': 'Sell'}
 SYMBOL = {'BRK.B': 'BRK-B'}  # Yahoo spelling differences
 
@@ -56,6 +59,8 @@ def comment(growth, margin, fpe, rating, price, target):
 
 def refresh(row):
     sym = SYMBOL.get(row['t'], row['t'])
+    if row.get('ccy') == 'USD' and '.' in sym:
+        sym = sym.replace('.', '-')  # US class shares, e.g. BRK.B -> BRK-B
     tk = yf.Ticker(sym)
     h = tk.history(period='3y', interval='1d', auto_adjust=False)
     if h is None or len(h) < 20:
@@ -65,6 +70,11 @@ def refresh(row):
     last = h.index[-1]
     y1 = h[h.index > last - datetime.timedelta(days=365)]
     row['p'] = rnd(price)
+    try:
+        wc = h['Close'].resample('W').last().ffill().dropna()
+        HIST[row['t']] = {'s': str(wc.index[0].date()), 'v': [rnd(float(x), 2) for x in wc.values]}
+    except Exception:
+        pass
     row['m3'], row['n3'] = rnd(float(h['High'].max())), rnd(float(h['Low'].min()))
     row['m1'], row['n1'] = rnd(float(y1['High'].max())), rnd(float(y1['Low'].min()))
     # % vs last week's close = close of the last trading day on or before 7 days ago
@@ -76,6 +86,11 @@ def refresh(row):
         info = tk.info or {}
     except Exception:
         info = {}
+    rev = num(info.get('totalRevenue'))
+    if rev:
+        row['rev'] = rnd(rev / 1e9, 2)   # annual revenue, billions, in the financial currency below
+        row['fcy'] = str(info.get('financialCurrency') or row.get('ccy') or 'USD')
+        FCY.add(row['fcy'])
     fpe, tpe = num(info.get('forwardPE')), num(info.get('trailingPE'))
     if fpe is not None and fpe > 0: row['pe'] = rnd(fpe)
     if tpe is not None: row['pet'] = rnd(tpe) if tpe > 0 else None
@@ -91,9 +106,10 @@ def refresh(row):
     return row
 
 
-def fx():
+def fx(extra=()):
     out = {'EUR': 1}
-    for ccy, sym in (('USD', 'EURUSD=X'), ('CHF', 'EURCHF=X')):
+    for ccy in sorted(({'USD', 'CHF'} | set(extra)) - {'EUR'}):
+        sym = 'EUR%s=X' % ccy
         try:
             h = yf.Ticker(sym).history(period='5d')
             v = rnd(float(h['Close'].dropna().iloc[-1]), 4)
@@ -106,6 +122,10 @@ def fx():
 
 def main():
     data = json.load(open(PATH))
+    try:
+        HIST.update(json.load(open(HIST_PATH)).get('series', {}))  # keep old history for stocks that fail today
+    except Exception:
+        pass
     ok, failed = 0, []
     for row in data['stocks']:
         try:
@@ -114,14 +134,15 @@ def main():
         except Exception as e:
             failed.append(row['t'])
             print('FAILED', row['t'], e, file=sys.stderr)
-        time.sleep(0.3)
-    rates = fx()
+        time.sleep(0.2)
+    rates = fx(FCY | {r.get('ccy') for r in data['stocks'] if r.get('ccy')})
     data['fx'] = {**data.get('fx', {}), **rates}
     print('updated %d of %d; failed: %s' % (ok, len(data['stocks']), ', '.join(failed) or '-'))
     if ok < len(data['stocks']) * 0.5:
         sys.exit('Too few stocks updated (%d) - keeping the previous data.json' % ok)
     data['asof'] = datetime.date.today().isoformat()
     json.dump(data, open(PATH, 'w'), ensure_ascii=False, indent=1)
+    json.dump({'asof': data['asof'], 'series': HIST}, open(HIST_PATH, 'w'), separators=(',', ':'))
 
 
 if __name__ == '__main__':
