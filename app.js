@@ -1063,6 +1063,16 @@
 
       'playdata.title': 'Play with data',
       'playdata.subtabExamples': 'Examples',
+      'playdata.subtabBiggest': "Biggest companies",
+      'big.title': "Largest companies by revenue",
+      'big.sub': "S&P 100 companies by annual revenue, in billions of euros.",
+      'big.all': "Top 15",
+      'big.soon': "Revenue data arrives with the next data update.",
+      'big.unit': "B",
+      'insights.chart.title': "3-year price history (weekly, in euros)",
+      'insights.chart.soon': "Price history arrives with the next data update.",
+      'insights.chart.high': "3yr high",
+      'insights.chart.low': "3yr low",
       'playdata.subtabScenario': 'Simulate',
       'playdata.intro': 'A few real examples to get a feel for how different investment types have actually moved over the last years.',
       'playdata.riskOrderNote': 'These examples are ordered roughly from lower risk — broad and diversified — to higher risk, ending with a single stock and a single cryptocurrency.',
@@ -1221,7 +1231,7 @@
       'guide.tabTable': "All stocks table",
       'insights.back': "← Guide",
       'insights.title': "All stocks table",
-      'insights.asof': "S&P 100 · data as of {date} · filled in for {m} of {n} companies",
+      'insights.asof': "Data as of {date} · filled in for {m} of {n} companies",
       'insights.sortWeek': "Biggest weekly change",
       'insights.sortName': "A–Z",
       'insights.favOnly': "★ Favorites only",
@@ -1339,6 +1349,16 @@
 
       'playdata.title': 'Speel met data',
       'playdata.subtabExamples': 'Voorbeelden',
+      'playdata.subtabBiggest': "Grootste bedrijven",
+      'big.title': "Grootste bedrijven naar omzet",
+      'big.sub': "S&P 100-bedrijven naar jaaromzet, in miljarden euro's.",
+      'big.all': "Top 15",
+      'big.soon': "Omzetdata volgt bij de volgende data-update.",
+      'big.unit': " mld",
+      'insights.chart.title': "Koers over 3 jaar (wekelijks, in euro's)",
+      'insights.chart.soon': "Koershistorie volgt bij de volgende data-update.",
+      'insights.chart.high': "Hoogste 3 jr",
+      'insights.chart.low': "Laagste 3 jr",
       'playdata.subtabScenario': 'Simuleer',
       'playdata.intro': 'Een paar echte voorbeelden om een gevoel te krijgen van hoe verschillende soorten investeringen zich de afgelopen jaren daadwerkelijk hebben ontwikkeld.',
       'playdata.riskOrderNote': 'Deze voorbeelden zijn ongeveer gerangschikt van laag risico — breed gespreid — tot hoger risico, eindigend met een individueel aandeel en een individuele cryptovaluta.',
@@ -1497,7 +1517,7 @@
       'guide.tabTable': "Alle aandelen-tabel",
       'insights.back': "← Guide",
       'insights.title': "Alle aandelen-tabel",
-      'insights.asof': "S&P 100 · data per {date} · ingevuld voor {m} van {n} bedrijven",
+      'insights.asof': "Data per {date} · ingevuld voor {m} van {n} bedrijven",
       'insights.sortWeek': "Grootste weekverandering",
       'insights.sortName': "A–Z",
       'insights.favOnly': "★ Alleen favorieten",
@@ -2261,12 +2281,127 @@
     return CHART_COLORS[theme][key] || CHART_COLORS.light[key];
   }
 
+
+  // ---- Price history popup (click a stock name in the all stocks table) ----
+  var insHistPromise = null, insChartEl = null;
+  function insLoadHistory(){
+    if(!insHistPromise){
+      insHistPromise = (typeof fetch === 'function')
+        ? fetch('history.json?v=' + Date.now(), { cache:'no-store' }).then(function(r){ if(!r.ok) throw new Error('http'); return r.json(); }).then(function(d){ return (d && d.series) || {}; }).catch(function(){ insHistPromise = null; return {}; })
+        : Promise.resolve({});
+    }
+    return insHistPromise;
+  }
+  function closeInsChart(){
+    if(insChartEl && insChartEl.parentNode) insChartEl.parentNode.removeChild(insChartEl);
+    insChartEl = null;
+  }
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeInsChart(); });
+
+  function insChartSvg(vals, startDate){
+    var W = 640, H = 280, L = 54, R = 16, T = 18, B = 30;
+    var mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals);
+    if(mx === mn){ mx += 1; mn -= 1; }
+    var pad = (mx - mn) * 0.06; mn -= pad; mx += pad;
+    var x = function(i){ return L + (W - L - R) * i / (vals.length - 1); };
+    var y = function(v){ return T + (H - T - B) * (1 - (v - mn) / (mx - mn)); };
+    var fmt = function(v){ return '€' + Math.round(v).toLocaleString('en-US'); };
+    var pts = vals.map(function(v, i){ return x(i).toFixed(1) + ',' + y(v).toFixed(1); });
+    var line = 'M' + pts.join(' L');
+    var area = line + ' L' + x(vals.length - 1).toFixed(1) + ',' + (H - B) + ' L' + L + ',' + (H - B) + ' Z';
+    var g = '';
+    [0, 0.5, 1].forEach(function(f){
+      var v = mn + (mx - mn) * f, yy = y(v);
+      g += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + yy.toFixed(1) + '" y2="' + yy.toFixed(1) + '" stroke="var(--line)" stroke-dasharray="3 4" stroke-width="1"/>';
+      g += '<text x="' + (L - 8) + '" y="' + (yy + 4).toFixed(1) + '" text-anchor="end" font-size="11" fill="var(--ink-soft)">' + fmt(v) + '</text>';
+    });
+    var d0 = new Date(startDate + 'T12:00:00'), loc = state.lang === 'nl' ? 'nl-NL' : 'en-GB';
+    [0, 0.5, 1].forEach(function(f, k){
+      var i = Math.round((vals.length - 1) * f), d = new Date(d0.getTime() + i * 7 * 86400000);
+      g += '<text x="' + x(i).toFixed(1) + '" y="' + (H - 8) + '" text-anchor="' + (k === 0 ? 'start' : (k === 2 ? 'end' : 'middle')) + '" font-size="11" fill="var(--ink-soft)">' + d.toLocaleDateString(loc, { month:'short', year:'numeric' }) + '</text>';
+    });
+    var imx = vals.indexOf(Math.max.apply(null, vals)), imn = vals.indexOf(Math.min.apply(null, vals));
+    var dot = function(i, c){ return '<circle cx="' + x(i).toFixed(1) + '" cy="' + y(vals[i]).toFixed(1) + '" r="4" fill="' + c + '"/>'; };
+    return '<svg viewBox="0 0 ' + W + ' ' + H + '" class="ins-chart-svg" role="img">' +
+      '<defs><linearGradient id="insgrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6b72f0" stop-opacity=".35"/><stop offset="1" stop-color="#6b72f0" stop-opacity="0"/></linearGradient></defs>' +
+      g + '<path d="' + area + '" fill="url(#insgrad)"/><path d="' + line + '" fill="none" stroke="#6b72f0" stroke-width="2.2" stroke-linejoin="round"/>' +
+      dot(imx, 'var(--good)') + dot(imn, 'var(--bad)') + dot(vals.length - 1, '#6b72f0') + '</svg>';
+  }
+
+  function openInsChart(tk){
+    var s = INSIGHTS_DATA.stocks.filter(function(x){ return x.t === tk; })[0];
+    if(!s) return;
+    closeInsChart();
+    var ov = document.createElement('div');
+    ov.className = 'ins-chart-overlay';
+    ov.innerHTML = '<div class="ins-chart-card"><button class="ins-chart-close" aria-label="close">×</button>' +
+      '<div class="ins-chart-name"></div><div class="ins-chart-sub"></div><div class="ins-chart-body"></div><div class="ins-chart-legend"></div></div>';
+    ov.addEventListener('click', function(e){ if(e.target === ov || (e.target.classList && e.target.classList.contains('ins-chart-close'))) closeInsChart(); });
+    document.body.appendChild(ov);
+    insChartEl = ov;
+    ov.querySelector('.ins-chart-name').textContent = s.n;
+    ov.querySelector('.ins-chart-sub').textContent = s.t + ' · ' + t('insights.chart.title');
+    var body = ov.querySelector('.ins-chart-body');
+    body.innerHTML = '<p class="ins-chart-msg">…</p>';
+    insLoadHistory().then(function(all){
+      if(insChartEl !== ov) return;
+      var hs = all[tk], fx = GUIDE_FX[s.ccy] || 1;
+      if(!hs || !hs.v || hs.v.length < 5){ body.innerHTML = '<p class="ins-chart-msg">' + t('insights.chart.soon') + '</p>'; return; }
+      var vals = hs.v.map(function(v){ return v / fx; });
+      body.innerHTML = insChartSvg(vals, hs.s);
+      var f = function(v){ return '€' + Math.round(v).toLocaleString('en-US'); };
+      ov.querySelector('.ins-chart-legend').innerHTML =
+        '<span><i style="background:var(--good)"></i>' + t('insights.chart.high') + ' ' + f(Math.max.apply(null, vals)) + '</span>' +
+        '<span><i style="background:var(--bad)"></i>' + t('insights.chart.low') + ' ' + f(Math.min.apply(null, vals)) + '</span>' +
+        '<span><i style="background:#6b72f0"></i>' + f(vals[vals.length - 1]) + '</span>';
+    });
+  }
+
+  // ---- Play tab: biggest companies by revenue (S&P 100) ----
+  var bigSector = '';
+  function renderBiggest(){
+    var pills = document.getElementById('big-sectors'), chart = document.getElementById('big-chart');
+    if(!pills || !chart) return;
+    var eur = function(s){ var c = GUIDE_FX[s.fcy || s.ccy] || null; return (s.rev && c) ? s.rev / c : null; };
+    var all = INSIGHTS_DATA.stocks.filter(function(s){ return (s.l || ['sp100']).indexOf('sp100') !== -1 && eur(s) !== null; });
+    pills.innerHTML = ''; chart.innerHTML = '';
+    if(!all.length){ chart.innerHTML = '<p class="ins-chart-msg">' + t('big.soon') + '</p>'; return; }
+    var counts = {};
+    all.forEach(function(s){ counts[s.s] = (counts[s.s] || 0) + 1; });
+    var secs = Object.keys(counts).sort(function(a, b){ return insSectorLabel(a).localeCompare(insSectorLabel(b)); });
+    if(secs.indexOf(bigSector) === -1) bigSector = '';
+    var mk = function(val, label){
+      var b = document.createElement('button');
+      b.className = 'subtab-btn' + (bigSector === val ? ' active' : '');
+      b.textContent = label;
+      b.addEventListener('click', function(){ bigSector = val; renderBiggest(); });
+      pills.appendChild(b);
+    };
+    mk('', t('big.all'));
+    secs.forEach(function(sc){ mk(sc, insSectorLabel(sc) + ' (' + counts[sc] + ')'); });
+    var list = all.filter(function(s){ return !bigSector || s.s === bigSector; });
+    list.sort(function(a, b){ return eur(b) - eur(a); });
+    if(!bigSector) list = list.slice(0, 15);
+    var top = eur(list[0]);
+    list.forEach(function(s){
+      var v = eur(s), row = document.createElement('div');
+      row.className = 'big-row';
+      row.innerHTML = '<div class="big-name"></div><div class="big-barwrap"><div class="big-bar" style="width:' + Math.max(2, v / top * 100).toFixed(1) + '%"></div></div><div class="big-val">€' + Math.round(v).toLocaleString('en-US') + t('big.unit') + '</div>';
+      row.querySelector('.big-name').textContent = s.n;
+      chart.appendChild(row);
+    });
+  }
+
   function switchPlaydataSubtab(subtab){
     var examplesEl = document.getElementById('playdata-examples');
     var scenarioEl = document.getElementById('playdata-scenario');
     if(!examplesEl || !scenarioEl) return;
     examplesEl.classList.toggle('hidden', subtab !== 'examples');
     scenarioEl.classList.toggle('hidden', subtab !== 'scenario');
+    var bigEl = document.getElementById('playdata-biggest');
+    if(bigEl){ bigEl.classList.toggle('hidden', subtab !== 'biggest'); if(subtab === 'biggest') renderBiggest(); }
+    var bigBtn = document.getElementById('subtab-biggest');
+    if(bigBtn) bigBtn.classList.toggle('active', subtab === 'biggest');
     ['subtab-examples','subtab-examples-bottom','subtab-examples-bottom2'].forEach(function(id){
       var btn = document.getElementById(id);
       if(btn) btn.classList.toggle('active', subtab === 'examples');
@@ -2287,7 +2422,11 @@
     if(btn) btn.addEventListener('click', function(){ switchPlaydataSubtab('scenario'); });
   });
 
+  var bigTabBtn = document.getElementById('subtab-biggest');
+  if(bigTabBtn) bigTabBtn.addEventListener('click', function(){ switchPlaydataSubtab('biggest'); });
+
   function renderSPXChart(){
+    renderBiggest();
     var c;
     c = chartColor('spx'); renderChartInto('spx-chart', SPX_DATA, c.color, c.fill);
     c = chartColor('allworld'); renderChartInto('allworld-chart', ALLWORLD_DATA, c.color, c.fill);
@@ -2921,6 +3060,8 @@
   var insSort = { key:'drop3', dir:'desc' };
   var insFavOnly = false;
   var insSector = '';
+  var insList = 'sp100';
+  function insInList(s){ return (s.l || ['sp100','sp500']).indexOf(insList) !== -1; }
   var INS_RATING_RANK = { 'Strong Buy':4, 'Buy':3, 'Hold':2, 'Sell':1 };
   var INS_APP_RANK = { 'Strong Buy':5, 'Buy':4, 'Hold':3, 'Neutral':2, 'Sell':1 };
   function INS_OUTLOOK_RANK(c){
@@ -2958,7 +3099,7 @@
 
   function insRows(){
     var fav = state.favorites || [];
-    var list = INSIGHTS_DATA.stocks.filter(function(s){ return !insSector || s.s === insSector; });
+    var list = INSIGHTS_DATA.stocks.filter(function(s){ return insInList(s) && (!insSector || s.s === insSector); });
     var rows = list.map(function(s){
       var fx = GUIDE_FX[s.ccy] || null;
       var eur = function(v){ return (v === null || v === undefined || !fx) ? null : v / fx; };
@@ -3011,11 +3152,11 @@
     if(!body) return;
     var d = new Date(INSIGHTS_DATA.asof + 'T12:00:00');
     var dateStr = d.toLocaleDateString(state.lang === 'nl' ? 'nl-NL' : 'en-GB', { day:'numeric', month:'short', year:'numeric' });
-    document.getElementById('ins-asof').textContent = t('insights.asof').replace('{date}', dateStr).replace('{n}', INSIGHTS_DATA.stocks.length).replace('{m}', INSIGHTS_DATA.stocks.filter(function(s){ return s.p !== null; }).length);
+    document.getElementById('ins-asof').textContent = t('insights.asof').replace('{date}', dateStr).replace('{n}', INSIGHTS_DATA.stocks.filter(insInList).length).replace('{m}', INSIGHTS_DATA.stocks.filter(function(s){ return insInList(s) && s.p !== null; }).length);
     var sel = document.getElementById('ins-sector');
     if(sel){
       var secs = [];
-      INSIGHTS_DATA.stocks.forEach(function(s){ if(secs.indexOf(s.s) === -1) secs.push(s.s); });
+      INSIGHTS_DATA.stocks.forEach(function(s){ if(insInList(s) && secs.indexOf(s.s) === -1) secs.push(s.s); });
       secs.sort(function(x, y){ return insSectorLabel(x).localeCompare(insSectorLabel(y)); });
       sel.innerHTML = '';
       var o0 = document.createElement('option'); o0.value = ''; o0.textContent = t('insights.allSectors'); sel.appendChild(o0);
@@ -3031,7 +3172,7 @@
       var mCell = function(v){ return v === null ? insNa() : insPill(Math.round(v) + '%', insMarginCls(v)); };
       var money = function(v){ return v === null ? insNa() : insFmtEur(v); };
       var cells = [
-        '<button class="ins-star' + (r.fav ? ' on' : '') + '" data-t="' + s.t + '" aria-label="favorite">' + (r.fav ? '★' : '☆') + '</button>' + s.n + '<span class="ins-sector">' + insSectorLabel(s.s) + '</span>',
+        '<button class="ins-star' + (r.fav ? ' on' : '') + '" data-t="' + s.t + '" aria-label="favorite">' + (r.fav ? '★' : '☆') + '</button><span class="ins-stock-link" data-t="' + s.t + '">' + s.n + '</span><span class="ins-sector">' + insSectorLabel(s.s) + '</span>',
         money(r.price), money(r.max1), money(r.max3), money(r.min1), money(r.min3),
         r.drop1 === null ? insNa() : insPill(insSigned(r.drop1), insDropCls(r.drop1)),
         r.drop3 === null ? insNa() : insPill(insSigned(r.drop3), insDropCls(r.drop3)),
@@ -3056,6 +3197,7 @@
     INS_SORT_BTNS.forEach(function(p){
       var b = document.getElementById(p[0]); if(b) b.classList.toggle('active', insSort.key === p[1]);
     });
+    ['sp100','sp500','eurostoxx50'].forEach(function(k){ var lb = document.getElementById('ins-list-' + k); if(lb) lb.classList.toggle('active', insList === k); });
     var fb = document.getElementById('ins-fav-only'); if(fb) fb.classList.toggle('active', insFavOnly);
     INS_SORT_THS.forEach(function(p){
       var th = document.getElementById(p[0]); if(!th) return;
@@ -3087,9 +3229,14 @@
     });
     var secSel = document.getElementById('ins-sector');
     if(secSel) secSel.addEventListener('change', function(){ insSector = secSel.value; renderInsights(); });
+    ['sp100','sp500','eurostoxx50'].forEach(function(k){
+      on('ins-list-' + k, function(){ insList = k; insSector = ''; renderInsights(); });
+    });
     on('ins-fav-only', function(){ insFavOnly = !insFavOnly; renderInsights(); });
     var body = document.getElementById('ins-body');
     if(body) body.addEventListener('click', function(e){
+      var lk = e.target.closest ? e.target.closest('.ins-stock-link') : null;
+      if(lk){ openInsChart(lk.getAttribute('data-t')); return; }
       var b = e.target.closest ? e.target.closest('.ins-star') : null;
       if(!b) return;
       var tk = b.getAttribute('data-t');
@@ -3114,6 +3261,7 @@
         INSIGHTS_DATA = { asof:d.asof, stocks:d.stocks };
         if(d.fx){ Object.keys(d.fx).forEach(function(k){ if(d.fx[k] > 0.3 && d.fx[k] < 3) GUIDE_FX[k] = d.fx[k]; }); }
         renderInsights();
+        try{ renderBiggest(); }catch(e){}
         try{ renderGuide(); }catch(e){}
       })
       .catch(function(){});

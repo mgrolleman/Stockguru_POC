@@ -1535,6 +1535,27 @@
   .funnel-details-btn{display:block;width:100%;padding:16px;font-size:16px;}
   .insights-btn{display:block;width:100%;margin-top:16px;padding:14px;font-size:15px;}
   .guide-tabs{margin:0 0 16px;justify-content:flex-start;}
+  .ins-lists{margin:0 0 14px;justify-content:flex-start;}
+  .ins-stock-link{cursor:pointer;font-weight:600;border-bottom:1px dotted var(--ink-soft);}
+  .ins-stock-link:hover{color:var(--ink);}
+  .ins-chart-overlay{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:16px;}
+  .ins-chart-card{position:relative;width:100%;max-width:700px;background:var(--paper-raised);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:18px 18px 14px;box-shadow:0 10px 30px rgba(0,0,0,.4);min-width:0;}
+  .ins-chart-name{font-size:20px;font-weight:700;padding-right:30px;}
+  .ins-chart-sub{font-size:var(--fs-small);color:var(--ink-soft);margin:2px 0 10px;}
+  .ins-chart-close{position:absolute;top:8px;right:10px;background:none;border:0;color:var(--ink-soft);font-size:26px;line-height:1;cursor:pointer;}
+  .ins-chart-svg{width:100%;height:auto;display:block;}
+  .ins-chart-msg{color:var(--ink-soft);padding:30px 0;text-align:center;font-size:var(--fs-small);}
+  .ins-chart-legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:var(--fs-small);color:var(--ink-soft);margin-top:6px;}
+  .ins-chart-legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;}
+  .big-title{margin:16px 0 4px;}
+  .big-sub{margin:0 0 12px;color:var(--ink-soft);font-size:var(--fs-small);}
+  .big-pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+  .big-row{display:grid;grid-template-columns:minmax(80px,28%) 1fr auto;gap:8px;align-items:center;padding:8px 0;border-bottom:1px dashed var(--line);}
+  .big-name{font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .big-barwrap{min-width:0;}
+  .big-bar{height:22px;border-radius:3px;background:linear-gradient(90deg,#7a82f7,#222ea3);}
+  .big-val{font-weight:700;font-size:13px;min-width:64px;text-align:right;}
+
   .app.wide{max-width:none;}
   body.ins-open .bottom-nav{display:none !important;}
   .app.wide .ins-legend{margin-bottom:24px;}
@@ -1560,8 +1581,8 @@
   .ins-sector{display:block;font-weight:400;font-size:10px;color:var(--ink-soft);padding-left:28px;margin-top:1px;}
   .ins-star{background:none;border:0;cursor:pointer;font-size:16px;line-height:1;padding:0 6px 0 0;color:var(--ink-soft);}
   .ins-star.on{color:#F5B83D;}
-  .ins-table{--good:#34D399;--warn:#FB923C;--bad:#FB7185;--on-gb:#0B0D17;}
-  body:not(.theme-dark) .ins-table{--good:#2E9E6B;--warn:#E58A1F;--bad:#D9534F;--on-gb:#fff;}
+  .ins-table,.ins-chart-card{--good:#34D399;--warn:#FB923C;--bad:#FB7185;--on-gb:#0B0D17;}
+  body:not(.theme-dark) .ins-table,body:not(.theme-dark) .ins-chart-card{--good:#2E9E6B;--warn:#E58A1F;--bad:#D9534F;--on-gb:#fff;}
   .ins-pill{display:inline-block;min-width:46px;padding:2px 6px;border-radius:6px;text-align:center;font-family:'IBM Plex Mono',monospace;}
   .ins-pill.good{background:var(--good);color:var(--on-gb);}
   .ins-pill.warn{background:var(--warn);color:var(--on-gb);}
@@ -1769,6 +1790,14 @@
       <div class="subtab-row" id="playdata-subtabs">
         <button class="subtab-btn active" id="subtab-examples" data-subtab="examples" data-i18n="playdata.subtabExamples">Examples</button>
         <button class="subtab-btn" id="subtab-scenario" data-subtab="scenario" data-i18n="playdata.subtabScenario">Scenario</button>
+        <button class="subtab-btn" id="subtab-biggest" data-subtab="biggest" data-i18n="playdata.subtabBiggest">Biggest companies</button>
+      </div>
+
+      <div id="playdata-biggest" class="hidden">
+        <h3 class="big-title" data-i18n="big.title">Largest companies by revenue</h3>
+        <p class="big-sub" data-i18n="big.sub">S&amp;P 100 companies by annual revenue, in billions of euros.</p>
+        <div class="big-pills" id="big-sectors"></div>
+        <div class="big-chart" id="big-chart"></div>
       </div>
 
       <div id="playdata-examples">
@@ -2070,6 +2099,11 @@
     <div class="subtab-row guide-tabs">
       <button class="subtab-btn " id="ins-tab-visual" data-i18n="guide.tabVisual">Visual guide</button>
       <button class="subtab-btn active" id="ins-tab-table" data-i18n="guide.tabTable">All stocks table</button>
+    </div>
+    <div class="subtab-row ins-lists">
+      <button class="subtab-btn active" id="ins-list-sp100">S&amp;P 100</button>
+      <button class="subtab-btn" id="ins-list-sp500">S&amp;P 500</button>
+      <button class="subtab-btn" id="ins-list-eurostoxx50">Euro Stoxx 50</button>
     </div>
     <h2 class="ins-title" data-i18n="insights.title">All stocks table</h2>
     <p class="ins-asof" id="ins-asof"></p>
