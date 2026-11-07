@@ -1241,6 +1241,15 @@
       'insights.th.max3': "3yr max",
       'insights.th.max1': "1yr max",
       'insights.th.min1': "1yr min",
+      'insights.allCats': "All categories",
+      'insights.th.acc': "Dividend",
+      'insights.th.mo': "% vs last month",
+      'insights.th.te': "Costs (TER)",
+      'insights.th.yd': "Dividend yield",
+      'insights.th.top5': "Top 5 holdings",
+      'insights.acc.Acc': "Accumulating",
+      'insights.acc.Dist': "Distributing",
+      'insights.acc.None': "None",
       'insights.allSectors': "All industries",
       'insights.th.min3': "3yr min",
       'insights.th.week': "% vs last week",
@@ -1252,7 +1261,7 @@
       'insights.th.rating': "Analysts rating",
       'insights.th.apprating': "App rating",
       'insights.th.outlook': "Future outlook",
-      'insights.legend': "Colors: green is strong, orange neutral, red weak. Drop vs max: green above −10%, red below −30%. Vs last week: green from +2%, red from −2%. P/E: green up to 15, red above 30. Margins: green from 15%, red below 5%. All prices in euros. App rating (vs 3yr max, forward P/E, net margin, outlook): Strong Buy = drop over 30%, P/E under 20, margin over 20%, strong growth; Buy = drop over 20%, P/E under 25, margin over 15%, strong growth; Hold = drop over 20%, margin over 15%, but P/E 25 or higher or weaker growth; Sell = within 10% of max, P/E over 30 and weaker growth; Neutral = none of these.",
+      'insights.legend': "<b>Colors:</b> green is strong, orange neutral, red weak. Drop vs max: green above \u221210%, red below \u221230%. Vs last week: green from +2%, red from \u22122%. Vs last month (ETFs): green from +5%, red from \u22125%. P/E: green up to 15, red above 30. Margins: green from 15%, red below 5%. All prices in euros.<br><b>App rating:</b> our own rating, calculated by the app from the drop vs the 3-year max, forward P/E, net margin and outlook. Strong Buy = drop over 30%, P/E under 20, margin over 20% and strong growth. Buy = drop over 20%, P/E under 25, margin over 15% and strong growth. Hold = drop over 20%, margin over 15%, but P/E 25 or higher or weaker growth. Sell = within 10% of the max, P/E over 30 and weaker growth. Neutral = none of these.<br><b>Analysts rating:</b> the consensus of the analysts covering the stock, taken from Yahoo Finance (Strong Buy, Buy, Hold or Sell). The app does not calculate it, and it is not part of the App rating. It only plays an indirect role: a Hold or Sell counts as a warning sign in the outlook text, which the App rating uses.",
       'guide.th.outlook': 'Outlook',
       'guide.outlook.high': 'High',
       'guide.outlook.medium': 'Medium',
@@ -1527,6 +1536,15 @@
       'insights.th.max3': "3-jr max",
       'insights.th.max1': "1-jr max",
       'insights.th.min1': "1-jr min",
+      'insights.allCats': "Alle categorie\u00ebn",
+      'insights.th.acc': "Dividend",
+      'insights.th.mo': "% t.o.v. vorige maand",
+      'insights.th.te': "Kosten (TER)",
+      'insights.th.yd': "Dividend-rendement",
+      'insights.th.top5': "Top 5 posities",
+      'insights.acc.Acc': "Herbeleggend",
+      'insights.acc.Dist': "Uitkerend",
+      'insights.acc.None': "Geen",
       'insights.allSectors': "Alle sectoren",
       'insights.th.min3': "3-jr min",
       'insights.th.week': "% t.o.v. vorige week",
@@ -1538,7 +1556,7 @@
       'insights.th.rating': "Analisten-rating",
       'insights.th.apprating': "App-rating",
       'insights.th.outlook': "Vooruitzicht",
-      'insights.legend': "Kleuren: groen is sterk, oranje neutraal, rood zwak. Daling vs max: groen boven −10%, rood onder −30%. T.o.v. vorige week: groen vanaf +2%, rood vanaf −2%. K/W: groen tot 15, rood boven 30. Marges: groen vanaf 15%, rood onder 5%. Alle bedragen in euro. App-rating (t.o.v. 3-jr max, K/W, nettomarge, vooruitzicht): Strong Buy = daling meer dan 30%, K/W onder 20, marge boven 20%, sterke groei; Buy = daling meer dan 20%, K/W onder 25, marge boven 15%, sterke groei; Hold = daling meer dan 20%, marge boven 15%, maar K/W 25 of hoger of zwakkere groei; Sell = binnen 10% van max, K/W boven 30 en zwakkere groei; Neutral = geen van deze.",
+      'insights.legend': "<b>Kleuren:</b> groen is sterk, oranje neutraal, rood zwak. Daling vs max: groen boven \u221210%, rood onder \u221230%. T.o.v. vorige week: groen vanaf +2%, rood vanaf \u22122%. T.o.v. vorige maand (ETF's): groen vanaf +5%, rood vanaf \u22125%. K/W: groen tot 15, rood boven 30. Marges: groen vanaf 15%, rood onder 5%. Alle bedragen in euro.<br><b>App-rating:</b> onze eigen rating, door de app berekend uit de daling t.o.v. de 3-jaarsmax, verwachte K/W, nettomarge en vooruitzicht. Strong Buy = daling meer dan 30%, K/W onder 20, marge boven 20% en sterke groei. Buy = daling meer dan 20%, K/W onder 25, marge boven 15% en sterke groei. Hold = daling meer dan 20%, marge boven 15%, maar K/W 25 of hoger of zwakkere groei. Sell = binnen 10% van de max, K/W boven 30 en zwakkere groei. Neutral = geen van deze.<br><b>Analisten-rating:</b> de consensus van de analisten die het aandeel volgen, overgenomen van Yahoo Finance (Strong Buy, Buy, Hold of Sell). De app berekent die niet en hij maakt geen deel uit van de App-rating. Hij speelt alleen indirect mee: een Hold of Sell telt als waarschuwingssignaal in de vooruitzicht-tekst, die de App-rating gebruikt.",
       'guide.th.outlook': 'Vooruitzicht',
       'guide.outlook.high': 'Hoog',
       'guide.outlook.medium': 'Middel',
@@ -2298,11 +2316,13 @@
   }
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeInsChart(); });
 
+  var insGeo = null;
   function insChartSvg(vals, startDate){
     var W = 640, H = 280, L = 54, R = 16, T = 18, B = 30;
     var mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals);
     if(mx === mn){ mx += 1; mn -= 1; }
     var pad = (mx - mn) * 0.06; mn -= pad; mx += pad;
+    insGeo = { W:W, H:H, L:L, R:R, T:T, B:B, mn:mn, mx:mx, vals:vals, start:startDate };
     var x = function(i){ return L + (W - L - R) * i / (vals.length - 1); };
     var y = function(v){ return T + (H - T - B) * (1 - (v - mn) / (mx - mn)); };
     var fmt = function(v){ return '€' + Math.round(v).toLocaleString('en-US'); };
@@ -2322,10 +2342,42 @@
     });
     var imx = vals.indexOf(Math.max.apply(null, vals)), imn = vals.indexOf(Math.min.apply(null, vals));
     var dot = function(i, c){ return '<circle cx="' + x(i).toFixed(1) + '" cy="' + y(vals[i]).toFixed(1) + '" r="4" fill="' + c + '"/>'; };
-    return '<svg viewBox="0 0 ' + W + ' ' + H + '" class="ins-chart-svg" role="img">' +
+    return '<svg viewBox="0 0 ' + W + ' ' + H + '" class="ins-chart-svg" role="img" style="touch-action:none;cursor:crosshair">' +
       '<defs><linearGradient id="insgrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6b72f0" stop-opacity=".35"/><stop offset="1" stop-color="#6b72f0" stop-opacity="0"/></linearGradient></defs>' +
       g + '<path d="' + area + '" fill="url(#insgrad)"/><path d="' + line + '" fill="none" stroke="#6b72f0" stroke-width="2.2" stroke-linejoin="round"/>' +
-      dot(imx, 'var(--good)') + dot(imn, 'var(--bad)') + dot(vals.length - 1, '#6b72f0') + '</svg>';
+      dot(imx, 'var(--good)') + dot(imn, 'var(--bad)') + dot(vals.length - 1, '#6b72f0') +
+      '<line id="ins-hv" y1="' + T + '" y2="' + (H - B) + '" stroke="var(--ink-soft)" stroke-width="1" stroke-dasharray="3 3" style="display:none"/>' +
+      '<circle id="ins-hd" r="5.5" fill="var(--paper-raised)" stroke="#6b72f0" stroke-width="2.5" style="display:none"/></svg>' +
+      '<div id="ins-tip" class="ins-chart-tip" style="display:none"></div>';
+  }
+
+  // Hover / touch: show date and price at the pointer position
+  function insChartHover(body){
+    var svg = body.querySelector('svg'), tip = body.querySelector('#ins-tip');
+    if(!svg || !tip || !insGeo) return;
+    var vl = svg.querySelector('#ins-hv'), hd = svg.querySelector('#ins-hd'), g = insGeo, n = g.vals.length;
+    var loc = state.lang === 'nl' ? 'nl-NL' : 'en-GB', d0 = new Date(g.start + 'T12:00:00');
+    function show(ev){
+      var r = svg.getBoundingClientRect();
+      var px = (ev.clientX - r.left) / r.width * g.W;
+      var i = Math.round((px - g.L) / (g.W - g.L - g.R) * (n - 1));
+      i = Math.max(0, Math.min(n - 1, i));
+      var cx = g.L + (g.W - g.L - g.R) * i / (n - 1);
+      var cy = g.T + (g.H - g.T - g.B) * (1 - (g.vals[i] - g.mn) / (g.mx - g.mn));
+      vl.setAttribute('x1', cx); vl.setAttribute('x2', cx); vl.style.display = '';
+      hd.setAttribute('cx', cx); hd.setAttribute('cy', cy); hd.style.display = '';
+      var d = new Date(d0.getTime() + i * 7 * 86400000);
+      tip.innerHTML = '<b>€' + Math.round(g.vals[i]).toLocaleString('en-US') + '</b><span>' + d.toLocaleDateString(loc, { day:'numeric', month:'short', year:'numeric' }) + '</span>';
+      tip.style.display = '';
+      var sx = cx / g.W * r.width, sy = cy / g.H * r.height, tw = tip.offsetWidth;
+      var left = Math.max(0, Math.min(r.width - tw, sx - tw / 2));
+      tip.style.left = left + 'px';
+      tip.style.top = Math.max(0, sy - tip.offsetHeight - 12) + 'px';
+    }
+    function hide(){ vl.style.display = 'none'; hd.style.display = 'none'; tip.style.display = 'none'; }
+    svg.addEventListener('pointermove', show);
+    svg.addEventListener('pointerdown', show);
+    svg.addEventListener('pointerleave', hide);
   }
 
   function openInsChart(tk){
@@ -2349,6 +2401,7 @@
       if(!hs || !hs.v || hs.v.length < 5){ body.innerHTML = '<p class="ins-chart-msg">' + t('insights.chart.soon') + '</p>'; return; }
       var vals = hs.v.map(function(v){ return v / fx; });
       body.innerHTML = insChartSvg(vals, hs.s);
+      insChartHover(body);
       var f = function(v){ return '€' + Math.round(v).toLocaleString('en-US'); };
       ov.querySelector('.ins-chart-legend').innerHTML =
         '<span><i style="background:var(--good)"></i>' + t('insights.chart.high') + ' ' + f(Math.max.apply(null, vals)) + '</span>' +
@@ -3073,7 +3126,7 @@
     if(c.indexOf('Mixed') === 0) return 2;
     return 1;
   }
-  var INS_SECTOR_NL = { 'Information Technology':'Informatietechnologie', 'Health Care':'Gezondheidszorg', 'Financials':'Financi\u00eble sector', 'Consumer Discretionary':'Cyclische consumptie', 'Consumer Staples':'Basisconsumptie', 'Industrials':'Industrie', 'Energy':'Energie', 'Utilities':'Nutsbedrijven', 'Communication Services':'Communicatie', 'Real Estate':'Vastgoed', 'Materials':'Materialen' };
+  var INS_SECTOR_NL = { 'Information Technology':'Informatietechnologie', 'Health Care':'Gezondheidszorg', 'Financials':'Financi\u00eble sector', 'Consumer Discretionary':'Cyclische consumptie', 'Consumer Staples':'Basisconsumptie', 'Industrials':'Industrie', 'Energy':'Energie', 'Utilities':'Nutsbedrijven', 'Communication Services':'Communicatie', 'Real Estate':'Vastgoed', 'Materials':'Materialen', 'World':'Wereld', 'US stocks':'Amerikaanse aandelen', 'Europe':'Europa', 'Emerging markets':'Opkomende markten', 'Technology & AI':'Technologie & AI', 'Defense':'Defensie', 'Metals & mining':'Metalen & mijnbouw', 'Precious metals':'Edelmetalen' };
   function insSectorLabel(s){ return state.lang === 'nl' ? (INS_SECTOR_NL[s] || s) : s; }
 
   function insFmtEur(v){ return '€' + Math.round(v).toLocaleString('en-US'); }
@@ -3081,6 +3134,7 @@
   function insNa(){ return '<span class="ins-na">—</span>'; }
   function insDropCls(v){ return v >= -10 ? 'good' : (v >= -30 ? 'warn' : 'bad'); }
   function insWeekCls(v){ return v >= 2 ? 'good' : (v > -2 ? 'warn' : 'bad'); }
+  function insMonthCls(v){ return v >= 5 ? 'good' : (v > -5 ? 'warn' : 'bad'); }
   function insPeCls(v){ return v <= 15 ? 'good' : (v <= 30 ? 'warn' : 'bad'); }
   function insMarginCls(v){ return v >= 15 ? 'good' : (v >= 5 ? 'warn' : 'bad'); }
   function insSigned(v){ var r = Math.round(v); return (r > 0 ? '+' : (r < 0 ? '−' : '')) + Math.abs(r) + '%'; }
@@ -3119,6 +3173,12 @@
       o.rating = INS_RATING_RANK[s.r] || null;
       o.apprank = o.app ? INS_APP_RANK[o.app] : null;
       o.outlook = INS_OUTLOOK_RANK(s.c);
+      o.mo = (typeof s.mo === 'number') ? s.mo : null;
+      o.accr = ({ 'Acc':2, 'Dist':1, 'None':0 })[s.acc];
+      if(o.accr === undefined) o.accr = null;
+      o.te = (typeof s.te === 'number') ? s.te : null;
+      o.yd = (typeof s.yd === 'number') ? s.yd : null;
+      o.w5 = (typeof s.w5 === 'number') ? s.w5 : null;
       return o;
     });
     if(insFavOnly) rows = rows.filter(function(r){ return r.fav; });
@@ -3144,7 +3204,9 @@
     ['ins-th-week','week','insights.th.week'],['ins-th-pe','pe','insights.th.pe'],['ins-th-pet','pet','insights.th.pet'],
     ['ins-th-mg','mg','insights.th.margin'],['ins-th-om','om','insights.th.opm'],['ins-th-eps','eps','insights.th.eps'],
     ['ins-th-rating','rating','insights.th.rating'],['ins-th-app','apprank','insights.th.apprating'],
-    ['ins-th-outlook','outlook','insights.th.outlook']
+    ['ins-th-outlook','outlook','insights.th.outlook'],
+    ['ins-th-mo','mo','insights.th.mo'],['ins-th-acc','accr','insights.th.acc'],['ins-th-te','te','insights.th.te'],
+    ['ins-th-yd','yd','insights.th.yd'],['ins-th-top5','w5','insights.th.top5']
   ];
 
   function renderInsights(){
@@ -3159,11 +3221,13 @@
       INSIGHTS_DATA.stocks.forEach(function(s){ if(insInList(s) && secs.indexOf(s.s) === -1) secs.push(s.s); });
       secs.sort(function(x, y){ return insSectorLabel(x).localeCompare(insSectorLabel(y)); });
       sel.innerHTML = '';
-      var o0 = document.createElement('option'); o0.value = ''; o0.textContent = t('insights.allSectors'); sel.appendChild(o0);
+      var o0 = document.createElement('option'); o0.value = ''; o0.textContent = t(insList === 'etf' ? 'insights.allCats' : 'insights.allSectors'); sel.appendChild(o0);
       secs.forEach(function(sc){ var o = document.createElement('option'); o.value = sc; o.textContent = insSectorLabel(sc); sel.appendChild(o); });
       if(secs.indexOf(insSector) === -1) insSector = '';
       sel.value = insSector;
     }
+    var wrapEl = document.querySelector('.ins-wrap');
+    if(wrapEl) wrapEl.classList.toggle('etf-mode', insList === 'etf');
     var rows = insRows();
     body.innerHTML = '';
     rows.forEach(function(r){
@@ -3177,17 +3241,25 @@
         r.drop1 === null ? insNa() : insPill(insSigned(r.drop1), insDropCls(r.drop1)),
         r.drop3 === null ? insNa() : insPill(insSigned(r.drop3), insDropCls(r.drop3)),
         r.week === null ? insNa() : insPill(insSigned(r.week), insWeekCls(r.week)),
+        r.mo === null ? insNa() : insPill(insSigned(r.mo), insMonthCls(r.mo)),
         peCell(s.pe), peCell(s.pet), mCell(s.mg), mCell(s.om),
         r.eps === null ? '<span class="ins-na">n/a</span>' : insFmtEur(r.eps),
         s.r || insNa(),
         r.app ? insPill(r.app, insAppCls(r.app)) : insNa(),
-        (state.lang === 'nl' ? s.cn : s.c) || insNa()
+        (state.lang === 'nl' ? s.cn : s.c) || insNa(),
+        s.acc ? insPill(t('insights.acc.' + s.acc), s.acc === 'Acc' ? 'good' : (s.acc === 'Dist' ? 'warn' : 'neu')) : insNa(),
+        r.te === null ? insNa() : r.te.toFixed(2) + '%',
+        r.yd === null ? insNa() : r.yd.toFixed(1) + '%',
+        (s.h5 && s.h5.length) ? (s.h5.join(', ') + ' ' + (r.w5 === null ? '' : insPill(Math.round(r.w5) + '%', 'neu'))) : insNa()
       ];
       cells.forEach(function(html, i){
         var td = document.createElement('td');
         td.innerHTML = html;
         if(i === 0) td.className = 'ins-name';
-        if(i === 16) td.className = 'ins-comment';
+        if(i === 17) td.className = 'ins-comment';
+        if(i >= 10 && i <= 17) td.setAttribute('data-grp', 'eq');
+        if(i === 9 || i >= 18) td.setAttribute('data-grp', 'etf');
+        if(i === 21) td.className = 'ins-top5';
         tr.appendChild(td);
       });
       body.appendChild(tr);
@@ -3197,7 +3269,7 @@
     INS_SORT_BTNS.forEach(function(p){
       var b = document.getElementById(p[0]); if(b) b.classList.toggle('active', insSort.key === p[1]);
     });
-    ['sp100','sp500','eurostoxx50'].forEach(function(k){ var lb = document.getElementById('ins-list-' + k); if(lb) lb.classList.toggle('active', insList === k); });
+    ['sp100','sp500','eurostoxx50','etf'].forEach(function(k){ var lb = document.getElementById('ins-list-' + k); if(lb) lb.classList.toggle('active', insList === k); });
     var fb = document.getElementById('ins-fav-only'); if(fb) fb.classList.toggle('active', insFavOnly);
     INS_SORT_THS.forEach(function(p){
       var th = document.getElementById(p[0]); if(!th) return;
@@ -3229,7 +3301,7 @@
     });
     var secSel = document.getElementById('ins-sector');
     if(secSel) secSel.addEventListener('change', function(){ insSector = secSel.value; renderInsights(); });
-    ['sp100','sp500','eurostoxx50'].forEach(function(k){
+    ['sp100','sp500','eurostoxx50','etf'].forEach(function(k){
       on('ins-list-' + k, function(){ insList = k; insSector = ''; renderInsights(); });
     });
     on('ins-fav-only', function(){ insFavOnly = !insFavOnly; renderInsights(); });

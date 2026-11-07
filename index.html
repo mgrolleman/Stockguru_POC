@@ -1536,6 +1536,10 @@
   .insights-btn{display:block;width:100%;margin-top:16px;padding:14px;font-size:15px;}
   .guide-tabs{margin:0 0 16px;justify-content:flex-start;}
   .ins-lists{margin:0 0 14px;justify-content:flex-start;}
+  .ins-wrap.etf-mode [data-grp=eq]{display:none;}
+  .ins-wrap:not(.etf-mode) [data-grp=etf]{display:none;}
+  .ins-wrap.etf-mode .ins-table{min-width:1180px;}
+  .ins-table td.ins-top5{white-space:normal;min-width:300px;max-width:380px;line-height:1.35;}
   .ins-stock-link{cursor:pointer;font-weight:600;border-bottom:1px dotted var(--ink-soft);}
   .ins-stock-link:hover{color:var(--ink);}
   .ins-chart-overlay{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:16px;}
@@ -1544,6 +1548,10 @@
   .ins-chart-sub{font-size:var(--fs-small);color:var(--ink-soft);margin:2px 0 10px;}
   .ins-chart-close{position:absolute;top:8px;right:10px;background:none;border:0;color:var(--ink-soft);font-size:26px;line-height:1;cursor:pointer;}
   .ins-chart-svg{width:100%;height:auto;display:block;}
+  .ins-chart-body{position:relative;}
+  .ins-chart-tip{position:absolute;pointer-events:none;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:5px 9px;font-size:12px;line-height:1.25;white-space:nowrap;box-shadow:0 4px 12px rgba(0,0,0,.35);z-index:2;}
+  .ins-chart-tip b{display:block;font-size:15px;}
+  .ins-chart-tip span{color:var(--ink-soft);}
   .ins-chart-msg{color:var(--ink-soft);padding:30px 0;text-align:center;font-size:var(--fs-small);}
   .ins-chart-legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:var(--fs-small);color:var(--ink-soft);margin-top:6px;}
   .ins-chart-legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;}
@@ -1551,7 +1559,7 @@
   .big-sub{margin:0 0 12px;color:var(--ink-soft);font-size:var(--fs-small);}
   .big-pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
   .big-row{display:grid;grid-template-columns:minmax(80px,28%) 1fr auto;gap:8px;align-items:center;padding:8px 0;border-bottom:1px dashed var(--line);}
-  .big-name{font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .big-name{text-align:left;font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .big-barwrap{min-width:0;}
   .big-bar{height:22px;border-radius:3px;background:linear-gradient(90deg,#7a82f7,#222ea3);}
   .big-val{font-weight:700;font-size:13px;min-width:64px;text-align:right;}
@@ -1590,7 +1598,8 @@
   .ins-pill.neu{background:transparent;border:1px solid var(--line);color:var(--ink-soft);}
   .ins-na{color:var(--ink-soft);}
   .ins-empty{text-align:center;color:var(--ink-soft);margin:18px 0;}
-  .ins-legend{font-size:var(--fs-small);color:var(--ink-soft);margin:14px 0 0;}
+  .ins-legend{font-size:var(--fs-small);color:var(--ink-soft);margin:14px 0 0;line-height:1.55;}
+  .ins-legend b{color:var(--ink);}
   .guide-table-wrap{margin-top:14px;overflow-x:auto;}
   .guide-table{width:100%;border-collapse:collapse;font-size:11px;}
   .guide-table th,.guide-table td{padding:8px 2px;text-align:right;border-bottom:1px solid var(--line);color:var(--ink);white-space:nowrap;}
@@ -2104,6 +2113,7 @@
       <button class="subtab-btn active" id="ins-list-sp100">S&amp;P 100</button>
       <button class="subtab-btn" id="ins-list-sp500">S&amp;P 500</button>
       <button class="subtab-btn" id="ins-list-eurostoxx50">Euro Stoxx 50</button>
+      <button class="subtab-btn" id="ins-list-etf">ETF</button>
     </div>
     <h2 class="ins-title" data-i18n="insights.title">All stocks table</h2>
     <p class="ins-asof" id="ins-asof"></p>
@@ -2127,20 +2137,25 @@
           <th class="ins-sortable" id="ins-th-drop1" data-i18n="insights.th.drop1">% drop vs 1yr max</th>
           <th class="ins-sortable" id="ins-th-drop3" data-i18n="insights.th.drop3">% drop vs 3yr max</th>
           <th class="ins-sortable" id="ins-th-week" data-i18n="insights.th.week">% vs last week</th>
-          <th class="ins-sortable" id="ins-th-pe" data-i18n="insights.th.pe">P/E</th>
-          <th class="ins-sortable" id="ins-th-pet" data-i18n="insights.th.pet">P/E trail</th>
-          <th class="ins-sortable" id="ins-th-mg" data-i18n="insights.th.margin">Margin %</th>
-          <th class="ins-sortable" id="ins-th-om" data-i18n="insights.th.opm">Op. margin %</th>
-          <th class="ins-sortable" id="ins-th-eps" data-i18n="insights.th.eps">EPS</th>
-          <th class="ins-sortable" id="ins-th-rating" data-i18n="insights.th.rating">Analysts rating</th>
-          <th class="ins-sortable" id="ins-th-app" data-i18n="insights.th.apprating">App rating</th>
-          <th class="ins-comment ins-sortable" id="ins-th-outlook" data-i18n="insights.th.outlook">Future outlook</th>
+          <th class="ins-sortable" id="ins-th-mo" data-grp="etf" data-i18n="insights.th.mo">% vs last month</th>
+          <th class="ins-sortable" id="ins-th-pe" data-i18n="insights.th.pe" data-grp="eq">P/E</th>
+          <th class="ins-sortable" id="ins-th-pet" data-i18n="insights.th.pet" data-grp="eq">P/E trail</th>
+          <th class="ins-sortable" id="ins-th-mg" data-i18n="insights.th.margin" data-grp="eq">Margin %</th>
+          <th class="ins-sortable" id="ins-th-om" data-i18n="insights.th.opm" data-grp="eq">Op. margin %</th>
+          <th class="ins-sortable" id="ins-th-eps" data-i18n="insights.th.eps" data-grp="eq">EPS</th>
+          <th class="ins-sortable" id="ins-th-rating" data-i18n="insights.th.rating" data-grp="eq">Analysts rating</th>
+          <th class="ins-sortable" id="ins-th-app" data-i18n="insights.th.apprating" data-grp="eq">App rating</th>
+          <th class="ins-comment ins-sortable" id="ins-th-outlook" data-i18n="insights.th.outlook" data-grp="eq">Future outlook</th>
+          <th class="ins-sortable" id="ins-th-acc" data-grp="etf" data-i18n="insights.th.acc">Dividend</th>
+          <th class="ins-sortable" id="ins-th-te" data-grp="etf" data-i18n="insights.th.te">Costs (TER)</th>
+          <th class="ins-sortable" id="ins-th-yd" data-grp="etf" data-i18n="insights.th.yd">Dividend yield</th>
+          <th class="ins-sortable" id="ins-th-top5" data-grp="etf" data-i18n="insights.th.top5">Top 5 holdings</th>
         </tr></thead>
         <tbody id="ins-body"></tbody>
       </table>
     </div>
     <p class="ins-empty hidden" id="ins-empty" data-i18n="insights.noFav">No favorites yet. Tap the star next to a stock to save it.</p>
-    <p class="ins-legend" data-i18n="insights.legend">Colors: green is strong, orange neutral, red weak. Drop vs max: green above &minus;10%, red below &minus;30%. Vs last week: green from +2%, red from &minus;2%. P/E: green up to 15, red above 30. Margins: green from 15%, red below 5%. All prices in euros. App rating (vs 3yr max, forward P/E, net margin, outlook): Strong Buy = drop over 30%, P/E under 20, margin over 20%, strong growth; Buy = drop over 20%, P/E under 25, margin over 15%, strong growth; Hold = drop over 20%, margin over 15%, but P/E 25 or higher or weaker growth; Sell = within 10% of max, P/E over 30 and weaker growth; Neutral = none of these.</p>
+    <p class="ins-legend" data-i18n-html="insights.legend"><b>Colors:</b> green is strong, orange neutral, red weak. Drop vs max: green above &minus;10%, red below &minus;30%. Vs last week: green from +2%, red from &minus;2%. Vs last month (ETFs): green from +5%, red from &minus;5%. P/E: green up to 15, red above 30. Margins: green from 15%, red below 5%. All prices in euros.<br><b>App rating:</b> our own rating, calculated by the app from the drop vs the 3-year max, forward P/E, net margin and outlook. Strong Buy = drop over 30%, P/E under 20, margin over 20% and strong growth. Buy = drop over 20%, P/E under 25, margin over 15% and strong growth. Hold = drop over 20%, margin over 15%, but P/E 25 or higher or weaker growth. Sell = within 10% of the max, P/E over 30 and weaker growth. Neutral = none of these.<br><b>Analysts rating:</b> the consensus of the analysts covering the stock, taken from Yahoo Finance (Strong Buy, Buy, Hold or Sell). The app does not calculate it, and it is not part of the App rating. It only plays an indirect role: a Hold or Sell counts as a warning sign in the outlook text, which the App rating uses.</p>
   </div>
 
   <!-- FEEDBACK SCREEN -->
