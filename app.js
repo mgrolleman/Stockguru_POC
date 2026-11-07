@@ -1244,8 +1244,8 @@
       'insights.allCats': "All categories",
       'insights.th.acc': "Dividend",
       'insights.th.mo': "% vs last month",
-      'insights.th.te': "Costs (TER)",
-      'insights.th.yd': "Dividend yield",
+      'insights.th.r1': "Return 1yr",
+      'insights.th.r3': "Return 3yr",
       'insights.th.top5': "Top 5 holdings",
       'insights.acc.Acc': "Accumulating",
       'insights.acc.Dist': "Distributing",
@@ -1261,7 +1261,7 @@
       'insights.th.rating': "Analysts rating",
       'insights.th.apprating': "App rating",
       'insights.th.outlook': "Future outlook",
-      'insights.legend': "<b>Colors:</b> green is strong, orange neutral, red weak. Drop vs max: green above \u221210%, red below \u221230%. Vs last week: green from +2%, red from \u22122%. Vs last month (ETFs): green from +5%, red from \u22125%. P/E: green up to 15, red above 30. Margins: green from 15%, red below 5%. All prices in euros.<br><b>App rating:</b> our own rating, calculated by the app from the drop vs the 3-year max, forward P/E, net margin and outlook. Strong Buy = drop over 30%, P/E under 20, margin over 20% and strong growth. Buy = drop over 20%, P/E under 25, margin over 15% and strong growth. Hold = drop over 20%, margin over 15%, but P/E 25 or higher or weaker growth. Sell = within 10% of the max, P/E over 30 and weaker growth. Neutral = none of these.<br><b>Analysts rating:</b> the consensus of the analysts covering the stock, taken from Yahoo Finance (Strong Buy, Buy, Hold or Sell). The app does not calculate it, and it is not part of the App rating. It only plays an indirect role: a Hold or Sell counts as a warning sign in the outlook text, which the App rating uses.",
+      'insights.legend': "<b>Colors:</b> green is strong, orange neutral, red weak. Drop vs max: green above \u221210%, red below \u221230%. Vs last week: green from +2%, red from \u22122%. Vs last month (ETFs): green from +5%, red from \u22125%. ETF return over 1 and 3 years is the price change only: for accumulating funds the reinvested dividend is already inside the price, for distributing funds the payouts are not counted. Green from +10%, red below 0%. P/E: green up to 15, red above 30. Margins: green from 15%, red below 5%. All prices in euros.<br><b>App rating:</b> our own rating, calculated by the app from the drop vs the 3-year max, forward P/E, net margin and outlook. Strong Buy = drop over 30%, P/E under 20, margin over 20% and strong growth. Buy = drop over 20%, P/E under 25, margin over 15% and strong growth. Hold = drop over 20%, margin over 15%, but P/E 25 or higher or weaker growth. Sell = within 10% of the max, P/E over 30 and weaker growth. Neutral = none of these.<br><b>Analysts rating:</b> the consensus of the analysts covering the stock, taken from Yahoo Finance (Strong Buy, Buy, Hold or Sell). The app does not calculate it, and it is not part of the App rating. It only plays an indirect role: a Hold or Sell counts as a warning sign in the outlook text, which the App rating uses.",
       'guide.th.outlook': 'Outlook',
       'guide.outlook.high': 'High',
       'guide.outlook.medium': 'Medium',
@@ -1539,8 +1539,8 @@
       'insights.allCats': "Alle categorie\u00ebn",
       'insights.th.acc': "Dividend",
       'insights.th.mo': "% t.o.v. vorige maand",
-      'insights.th.te': "Kosten (TER)",
-      'insights.th.yd': "Dividend-rendement",
+      'insights.th.r1': "Rendement 1 jaar",
+      'insights.th.r3': "Rendement 3 jaar",
       'insights.th.top5': "Top 5 posities",
       'insights.acc.Acc': "Herbeleggend",
       'insights.acc.Dist': "Uitkerend",
@@ -1556,7 +1556,7 @@
       'insights.th.rating': "Analisten-rating",
       'insights.th.apprating': "App-rating",
       'insights.th.outlook': "Vooruitzicht",
-      'insights.legend': "<b>Kleuren:</b> groen is sterk, oranje neutraal, rood zwak. Daling vs max: groen boven \u221210%, rood onder \u221230%. T.o.v. vorige week: groen vanaf +2%, rood vanaf \u22122%. T.o.v. vorige maand (ETF's): groen vanaf +5%, rood vanaf \u22125%. K/W: groen tot 15, rood boven 30. Marges: groen vanaf 15%, rood onder 5%. Alle bedragen in euro.<br><b>App-rating:</b> onze eigen rating, door de app berekend uit de daling t.o.v. de 3-jaarsmax, verwachte K/W, nettomarge en vooruitzicht. Strong Buy = daling meer dan 30%, K/W onder 20, marge boven 20% en sterke groei. Buy = daling meer dan 20%, K/W onder 25, marge boven 15% en sterke groei. Hold = daling meer dan 20%, marge boven 15%, maar K/W 25 of hoger of zwakkere groei. Sell = binnen 10% van de max, K/W boven 30 en zwakkere groei. Neutral = geen van deze.<br><b>Analisten-rating:</b> de consensus van de analisten die het aandeel volgen, overgenomen van Yahoo Finance (Strong Buy, Buy, Hold of Sell). De app berekent die niet en hij maakt geen deel uit van de App-rating. Hij speelt alleen indirect mee: een Hold of Sell telt als waarschuwingssignaal in de vooruitzicht-tekst, die de App-rating gebruikt.",
+      'insights.legend': "<b>Kleuren:</b> groen is sterk, oranje neutraal, rood zwak. Daling vs max: groen boven \u221210%, rood onder \u221230%. T.o.v. vorige week: groen vanaf +2%, rood vanaf \u22122%. T.o.v. vorige maand (ETF's): groen vanaf +5%, rood vanaf \u22125%. Het ETF-rendement over 1 en 3 jaar is alleen de koersverandering: bij accumulerende fondsen zit het herbelegde dividend al in de koers, bij uitkerende fondsen tellen de uitkeringen niet mee. Groen vanaf +10%, rood onder 0%. K/W: groen tot 15, rood boven 30. Marges: groen vanaf 15%, rood onder 5%. Alle bedragen in euro.<br><b>App-rating:</b> onze eigen rating, door de app berekend uit de daling t.o.v. de 3-jaarsmax, verwachte K/W, nettomarge en vooruitzicht. Strong Buy = daling meer dan 30%, K/W onder 20, marge boven 20% en sterke groei. Buy = daling meer dan 20%, K/W onder 25, marge boven 15% en sterke groei. Hold = daling meer dan 20%, marge boven 15%, maar K/W 25 of hoger of zwakkere groei. Sell = binnen 10% van de max, K/W boven 30 en zwakkere groei. Neutral = geen van deze.<br><b>Analisten-rating:</b> de consensus van de analisten die het aandeel volgen, overgenomen van Yahoo Finance (Strong Buy, Buy, Hold of Sell). De app berekent die niet en hij maakt geen deel uit van de App-rating. Hij speelt alleen indirect mee: een Hold of Sell telt als waarschuwingssignaal in de vooruitzicht-tekst, die de App-rating gebruikt.",
       'guide.th.outlook': 'Vooruitzicht',
       'guide.outlook.high': 'Hoog',
       'guide.outlook.medium': 'Middel',
@@ -3176,8 +3176,8 @@
       o.mo = (typeof s.mo === 'number') ? s.mo : null;
       o.accr = ({ 'Acc':2, 'Dist':1, 'None':0 })[s.acc];
       if(o.accr === undefined) o.accr = null;
-      o.te = (typeof s.te === 'number') ? s.te : null;
-      o.yd = (typeof s.yd === 'number') ? s.yd : null;
+      o.r1 = (typeof s.r1 === 'number') ? s.r1 : null;
+      o.r3 = (typeof s.r3 === 'number') ? s.r3 : null;
       o.w5 = (typeof s.w5 === 'number') ? s.w5 : null;
       return o;
     });
@@ -3205,9 +3205,25 @@
     ['ins-th-mg','mg','insights.th.margin'],['ins-th-om','om','insights.th.opm'],['ins-th-eps','eps','insights.th.eps'],
     ['ins-th-rating','rating','insights.th.rating'],['ins-th-app','apprank','insights.th.apprating'],
     ['ins-th-outlook','outlook','insights.th.outlook'],
-    ['ins-th-mo','mo','insights.th.mo'],['ins-th-acc','accr','insights.th.acc'],['ins-th-te','te','insights.th.te'],
-    ['ins-th-yd','yd','insights.th.yd'],['ins-th-top5','w5','insights.th.top5']
+    ['ins-th-mo','mo','insights.th.mo'],['ins-th-acc','accr','insights.th.acc'],['ins-th-r1','r1','insights.th.r1'],
+    ['ins-th-r3','r3','insights.th.r3'],['ins-th-top5','w5','insights.th.top5']
   ];
+
+  var INS_NAME_EXC = { 'eli lilly':'Lilly', 'bank of america':'BofA', 'taiwan semiconductor':'TSMC', 'berkshire hathaway':'Berkshire',
+    'advanced micro devices':'AMD', 'meta platforms':'Meta', 'jpmorgan chase':'JPMorgan', 'johnson & johnson':'J&J', 'johnson &':'J&J',
+    'novo nordisk':'Novo', 'sk hynix':'SK Hynix', 'palo alto':'Palo Alto', 'wheaton precious':'Wheaton', 'newmont corp':'Newmont',
+    'agnico eagle':'Agnico', 'texas instruments':'TI', 'applied materials':'AMAT', 'lam research':'Lam', 'lockheed martin':'Lockheed',
+    'rtx corp':'RTX', 'northrop grumman':'Northrop', 'general dynamics':'GD', 'l3harris technologies':'L3Harris', 'rolls-royce holdings':'Rolls-Royce' };
+  function insFirstWord(n){
+    var full = String(n || '').trim();
+    var low = full.toLowerCase();
+    var keys = Object.keys(INS_NAME_EXC);
+    for(var i = 0; i < keys.length; i++){ if(low.indexOf(keys[i]) === 0) return INS_NAME_EXC[keys[i]]; }
+    var w = full.split(/[\s,]+/)[0] || full;
+    return w.replace(/\.com$/i, '').replace(/[.,]+$/, '');
+  }
+  // return colours: green from +10%, red below 0%
+  function insRetCls(v){ return v >= 10 ? 'good' : (v >= 0 ? 'warn' : 'bad'); }
 
   function renderInsights(){
     var body = document.getElementById('ins-body');
@@ -3248,9 +3264,9 @@
         r.app ? insPill(r.app, insAppCls(r.app)) : insNa(),
         (state.lang === 'nl' ? s.cn : s.c) || insNa(),
         s.acc ? insPill(t('insights.acc.' + s.acc), s.acc === 'Acc' ? 'good' : (s.acc === 'Dist' ? 'warn' : 'neu')) : insNa(),
-        r.te === null ? insNa() : r.te.toFixed(2) + '%',
-        r.yd === null ? insNa() : r.yd.toFixed(1) + '%',
-        (s.h5 && s.h5.length) ? (s.h5.join(', ') + ' ' + (r.w5 === null ? '' : insPill(Math.round(r.w5) + '%', 'neu'))) : insNa()
+        r.r1 === null ? insNa() : insPill(insSigned(r.r1), insRetCls(r.r1)),
+        r.r3 === null ? insNa() : insPill(insSigned(r.r3), insRetCls(r.r3)),
+        (s.h5 && s.h5.length) ? (s.h5.map(insFirstWord).join(', ') + ' ' + (r.w5 === null ? '' : insPill(Math.round(r.w5) + '%', 'neu'))) : insNa()
       ];
       cells.forEach(function(html, i){
         var td = document.createElement('td');
