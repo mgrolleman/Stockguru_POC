@@ -78,6 +78,12 @@ def apply_prices(row, h, factor=1.0):
     mo = h[h.index <= last - datetime.timedelta(days=30)]
     if len(mo):
         row['mo'] = rnd((price / (float(mo['Close'].iloc[-1]) * factor) - 1) * 100, 1)
+    if 'y' in row:   # ETF: price return over 1 and 3 years (raw price, so distributing funds exclude dividends)
+        a1 = h[h.index <= last - datetime.timedelta(days=365)]
+        if len(a1):
+            row['r1'] = rnd((price / (float(a1['Close'].iloc[-1]) * factor) - 1) * 100, 1)
+        if (last - h.index[0]).days >= 1000:
+            row['r3'] = rnd((price / (float(h['Close'].iloc[0]) * factor) - 1) * 100, 1)
     return price
 
 
