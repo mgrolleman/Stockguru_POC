@@ -57,7 +57,79 @@ def comment(growth, margin, fpe, rating, price, target):
     return ('Earnings expected to shrink', 'Winst naar verwachting lager')
 
 
+def apply_prices(row, h, factor=1.0):
+    """Price, 1yr/3yr max+min, % vs last week and weekly history from a daily price DataFrame."""
+    h = h.dropna(subset=['Close', 'High', 'Low'])
+    price = float(h['Close'].iloc[-1]) * factor
+    last = h.index[-1]
+    y1 = h[h.index > last - datetime.timedelta(days=365)]
+    row['p'] = rnd(price)
+    try:
+        wc = h['Close'].resample('W').last().ffill().dropna()
+        HIST[row['t']] = {'s': str(wc.index[0].date()), 'v': [rnd(float(x) * factor, 2) for x in wc.values]}
+    except Exception:
+        pass
+    row['m3'], row['n3'] = rnd(float(h['High'].max()) * factor), rnd(float(h['Low'].min()) * factor)
+    row['m1'], row['n1'] = rnd(float(y1['High'].max()) * factor), rnd(float(y1['Low'].min()) * factor)
+    # % vs last week's close = close of the last trading day on or before 7 days ago
+    wk = h[h.index <= last - datetime.timedelta(days=7)]
+    if len(wk):
+        row['wk'] = rnd((price / (float(wk['Close'].iloc[-1]) * factor) - 1) * 100, 1)
+    mo = h[h.index <= last - datetime.timedelta(days=30)]
+    if len(mo):
+        row['mo'] = rnd((price / (float(mo['Close'].iloc[-1]) * factor) - 1) * 100, 1)
+    return price
+
+
+def refresh_etf(row):
+    """ETF: try each candidate Yahoo symbol until one returns history AND a fund name containing the keyword
+    (so a wrong symbol can never silently show another fund)."""
+    for sym in row.get('y', []):
+        try:
+            tk = yf.Ticker(sym)
+            h = tk.history(period='3y', interval='1d', auto_adjust=False)
+            if h is None or len(h) < 20:
+                continue
+            try:
+                info = tk.info or {}
+            except Exception:
+                info = {}
+            name = str(info.get('longName') or info.get('shortName') or '').lower()
+            if row.get('k') and row['k'].lower() not in name:
+                print('  skip %s for %s: name is "%s"' % (sym, row['t'], name), file=sys.stderr)
+                continue
+            cur = str(info.get('currency') or row.get('ccy') or 'EUR')
+            factor = 0.01 if cur in ('GBp', 'GBX') else 1.0   # London quotes in pence
+            row['ccy'] = 'GBP' if factor != 1.0 else cur
+            apply_prices(row, h, factor)
+            row['ys'] = sym
+            if 'accum' in name or ' acc' in name: row['acc'] = 'Acc'
+            elif 'distrib' in name or ' dist' in name: row['acc'] = 'Dist'
+            te = num(info.get('netExpenseRatio'))
+            if te is None and num(info.get('annualReportExpenseRatio')) is not None:
+                te = num(info.get('annualReportExpenseRatio')) * 100
+            if te is not None: row['te'] = rnd(te, 2)
+            yd = num(info.get('yield'))
+            if yd is None: yd = num(info.get('trailingAnnualDividendYield'))
+            if yd is not None: row['yd'] = rnd(yd * 100, 1)
+            try:
+                th = tk.funds_data.top_holdings.head(5)
+                names = [str(x) for x in th['Name'].tolist()]
+                wts = [float(x) for x in th['Holding Percent'].tolist()]
+                if names:
+                    row['h5'] = names
+                    row['w5'] = rnd(sum(wts) * 100, 1)
+            except Exception:
+                pass   # holdings are not available for every fund; keep what we had
+            return row
+        except Exception as e:
+            print('  %s failed for %s: %s' % (sym, row['t'], e), file=sys.stderr)
+    raise RuntimeError('no working Yahoo symbol among %s' % row.get('y'))
+
+
 def refresh(row):
+    if row.get('y'):
+        return refresh_etf(row)
     sym = SYMBOL.get(row['t'], row['t'])
     if row.get('ccy') == 'USD' and '.' in sym:
         sym = sym.replace('.', '-')  # US class shares, e.g. BRK.B -> BRK-B
@@ -65,22 +137,7 @@ def refresh(row):
     h = tk.history(period='3y', interval='1d', auto_adjust=False)
     if h is None or len(h) < 20:
         raise RuntimeError('no price history')
-    h = h.dropna(subset=['Close', 'High', 'Low'])
-    price = float(h['Close'].iloc[-1])
-    last = h.index[-1]
-    y1 = h[h.index > last - datetime.timedelta(days=365)]
-    row['p'] = rnd(price)
-    try:
-        wc = h['Close'].resample('W').last().ffill().dropna()
-        HIST[row['t']] = {'s': str(wc.index[0].date()), 'v': [rnd(float(x), 2) for x in wc.values]}
-    except Exception:
-        pass
-    row['m3'], row['n3'] = rnd(float(h['High'].max())), rnd(float(h['Low'].min()))
-    row['m1'], row['n1'] = rnd(float(y1['High'].max())), rnd(float(y1['Low'].min()))
-    # % vs last week's close = close of the last trading day on or before 7 days ago
-    wk = h[h.index <= last - datetime.timedelta(days=7)]
-    if len(wk):
-        row['wk'] = rnd((price / float(wk['Close'].iloc[-1]) - 1) * 100, 1)
+    price = apply_prices(row, h)
 
     try:
         info = tk.info or {}
